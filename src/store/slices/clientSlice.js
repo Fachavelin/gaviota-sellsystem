@@ -3,30 +3,31 @@ import { createSlice } from '@reduxjs/toolkit';
 export const clientSlice = createSlice({
   name: 'client',
   initialState: {
-    loading: false, // '
+    status: 'authenticated', // '
     client: {},
-    msg: undefined,
+    errorMessage: undefined,
   },
   reducers: {
-    onLoading: (state) => {
-      state.loading = true;
+    onChecking: (state) => {
+      state.status = 'checking';
       state.client = {};
-      state.msg = undefined;
+      state.errorMessage = undefined;
     },
-    onFinished: (state, { payload }) => {
-      state.loading = false;
-      state.client = {};
-      state.msg = payload;
-    },
-    onAdd: (state, { payload }) => {
-      state.loading = false;
+    onLogin: (state, { payload }) => {
+      state.status = 'authenticated';
       state.client = payload;
-      state.msg = undefined;
+      state.errorMessage = undefined;
     },
-    clearMsg: (state) => {
-      state.msg = undefined;
+    onLogout: (state, { payload }) => {
+      state.status = 'not-authenticated';
+      state.client = {};
+      state.errorMessage = payload.errorMessage;
+    },
+    clearErrorMessage: (state) => {
+      state.errorMessage = undefined;
     },
   },
 });
 
-export const { onLoading, onFinished, clearMsg, onAdd } = clientSlice.actions;
+export const { onChecking, onLogin, onLogout, clearErrorMessage } =
+  clientSlice.actions;

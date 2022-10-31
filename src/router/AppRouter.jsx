@@ -1,12 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useClientStore } from '../hooks/useClientStore';
 import { Layout } from '../layout';
-import { IndexPage } from '../pages';
+import { ThankPages } from '../pages/ThankPage/ThankPages';
+import { PagesRouter } from './PagesRouter';
 
 export const AppRouter = () => {
-  const { loading, msg } = useClientStore();
+  const { status: authStatus, msg } = useClientStore();
 
-  if (loading === true) {
+  if (authStatus === 'checking') {
     return (
       <div className='h-screen bg-azul flex justify-center items-center '>
         <div className='text-white'>
@@ -22,7 +23,12 @@ export const AppRouter = () => {
   return (
     <Layout>
       <Routes>
-        <Route path='/*' element={<IndexPage />} />
+        {authStatus === 'authenticated' ? (
+          <Route path='/*' element={<PagesRouter />} />
+        ) : (
+          <Route path='/finalizado' element={<ThankPages />} />
+        )}
+        <Route path='/*' element={<Navigate to={'/finalizado'} />} />
       </Routes>
     </Layout>
   );

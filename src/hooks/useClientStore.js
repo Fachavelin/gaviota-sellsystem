@@ -1,13 +1,13 @@
 import { values } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { onLoading } from '../store/slices/clientSlice';
+import { onLogin } from '../store/slices/clientSlice';
 
 export const useClientStore = () => {
-  const { loading, client, msg } = useSelector((state) => state.client);
+  const { status, client, msg } = useSelector((state) => state.client);
   const dispatch = useDispatch();
 
   const startCreate = (values = {}) => {
-    dispatch(onLoading());
+    dispatch(onLogin(values));
   };
 
   const checkToken = (values = {}) => {
@@ -16,7 +16,7 @@ export const useClientStore = () => {
 
   return {
     //*Props
-    loading,
+    status,
     client,
     msg,
 
