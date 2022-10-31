@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Field, FieldArray, Form, Formik } from 'formik';
 import { useState, useEffect } from 'react';
 import api from '../../api/api';
+import { useTranslation } from 'react-i18next';
 
 let validationSchema = Yup.object().shape({
   reserves: Yup.array().of(
@@ -175,6 +176,8 @@ const getReferences = async () => {
     console.log(type);
   };
 
+  const { t, i18n } = useTranslation();
+
   return (
     <div className=''>
       <Title text='Generar Reserva' />
@@ -249,7 +252,7 @@ const getReferences = async () => {
                               {/* //?Date */}
                               <div className='mb-4'>
                                 <label className='block text-base font-bold'>
-                                  Fecha
+                                  {t('Fecha')}
                                 </label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
@@ -257,6 +260,7 @@ const getReferences = async () => {
                                     type='date'
                                     placeholder='Fecha'
                                     name={`reserves.${index}.date`}
+                                    lang={i18n.language}
                                   />
                                 </div>
                                 {errors.reserves &&
@@ -274,7 +278,7 @@ const getReferences = async () => {
                               {/* //?Ruta */}
                               <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
-                                  Ruta
+                                  {t('Ruta')}
                                 </label>
                                 <Field
                                   className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
@@ -306,7 +310,7 @@ const getReferences = async () => {
                               {/* //?Time */}
                               <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
-                                  Horario
+                                  {t('Horario')}
                                 </label>
                                 <Field
                                   className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
@@ -338,13 +342,13 @@ const getReferences = async () => {
                               {/* //?Nombre */}
                               <div className='mb-4'>
                                 <label className='block text-base font-bold '>
-                                  Nombre
+                                  {t('nombre')}
                                 </label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
                                     className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='text'
-                                    placeholder='Nombre'
+                                    placeholder={t('nombre')}
                                     name={`reserves.${index}.passenger`}
                                   />
                                 </div>
@@ -363,11 +367,11 @@ const getReferences = async () => {
                               {/* //?Pais */}
                               <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
-                                  Pais
+                                  {t('Pais')}
                                 </label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
-                                    placeholder='Seleccionar el pais'
+                                    placeholder={t('Seleccionar el pais')}
                                     className='w-full pl-3 py-2 dark:bg-slate-800 focus:outline-none leading-tight focus:shadow-outline rounded-lg'
                                     type='text'
                                     name={`reserves.${index}.country`}
@@ -399,7 +403,7 @@ const getReferences = async () => {
                               {/* //?Edad*/}
                               <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
-                                  Edad
+                                  {t('Edad')}
                                 </label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
@@ -424,13 +428,13 @@ const getReferences = async () => {
                               {/* //?Cedula */}
                               <div className='mb-4'>
                                 <label className='block text-base font-bold '>
-                                  Cédula/Pasaporte
+                                  {t('Cédula/Pasaporte')}
                                 </label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
                                     className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='text'
-                                    placeholder='Cédula/Pasaporte'
+                                    placeholder={t('Cédula/Pasaporte')}
                                     name={`reserves.${index}.passport`}
                                   />
                                 </div>
@@ -505,7 +509,7 @@ const getReferences = async () => {
                     type='submit'
                     /* disabled={loading} */
                   >
-                    Crear Reserva
+                    {t('Crear Reserva')}
                   </button>
                 </div>
               </Form>

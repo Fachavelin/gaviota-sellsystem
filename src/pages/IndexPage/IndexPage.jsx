@@ -5,6 +5,7 @@ import { Title } from '../../components/Title';
 import * as Yup from 'yup';
 import { useClientStore } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   name: '',
@@ -13,31 +14,28 @@ const initialValues = {
   documentId: '',
 };
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required('El nombre es requerido'),
-  email: Yup.string().required('El correo electrónico es requerido'),
-  phoneNumber: Yup.number()
-    .typeError('Debe ser un número')
-    .required('El numero de teléfono es requerido'),
-  documentId: Yup.string().required(
-    'El documento de identificación es requerido'
-  ),
-});
-
 export const IndexPage = () => {
-  //TODO: Crear Formulario con:
-  //TODO: Nommbre
-  //TODO: email,
-  //TODO: phoneNumber
-  //TODO: documentId
-
   const { startCreate } = useClientStore();
 
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required(t('El nombre es requerido')),
+    email: Yup.string().required(t('El correo electrónico es requerido')),
+    phoneNumber: Yup.number()
+      .typeError(t('Debe ser un número'))
+      .required(t('El numero de teléfono es requerido')),
+    documentId: Yup.string().required(
+      t('El documento de identificación es requerido')
+    ),
+  });
+
   return (
     <div className=''>
       <Title text='Datos del comprador' />
+
       <div className='mx-auto max-w-xl'>
         <div className='bg-white dark:bg-slate-800  w-full h-full py-2 rounded-md'>
           <Formik
@@ -53,12 +51,14 @@ export const IndexPage = () => {
                 <div className='grid md:grid-cols-2 gap-2 p-4'>
                   {/* //?Nombre */}
                   <div className='mb-4'>
-                    <label className='block text-base font-bold '>Nombre</label>
+                    <label className='block text-base font-bold '>
+                      {t('nombre')}
+                    </label>
                     <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                       <Field
                         className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                         type='text'
-                        placeholder='Nombre'
+                        placeholder={t('nombre')}
                         name={`name`}
                       />
                     </div>
@@ -69,12 +69,14 @@ export const IndexPage = () => {
 
                   {/* //?Email */}
                   <div className='mb-4'>
-                    <label className='block text-base font-bold '>Email</label>
+                    <label className='block text-base font-bold '>
+                      {t('email')}
+                    </label>
                     <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                       <Field
                         className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                         type='email'
-                        placeholder='Correo Electrónico'
+                        placeholder={t('email')}
                         name={`email`}
                       />
                     </div>
@@ -88,13 +90,13 @@ export const IndexPage = () => {
                   {/* //?phoneNumber */}
                   <div className='mb-4'>
                     <label className='block text-base font-bold '>
-                      Número de teléfono
+                      {t('Número de teléfono')}
                     </label>
                     <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                       <Field
                         className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                         type='text'
-                        placeholder='Número de teléfono'
+                        placeholder={t('Número de teléfono')}
                         name={`phoneNumber`}
                       />
                     </div>
@@ -111,13 +113,13 @@ export const IndexPage = () => {
                   {/* //?documentId */}
                   <div className='mb-4'>
                     <label className='block text-base font-bold '>
-                      Documento de Identificación
+                      {t('documento de Identificación')}
                     </label>
                     <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                       <Field
                         className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                         type='text'
-                        placeholder='Cedula/Passaporte'
+                        placeholder={t('documento de Identificación')}
                         name={`documentId`}
                       />
                     </div>
@@ -135,7 +137,7 @@ export const IndexPage = () => {
                     type='submit'
                     className='bg-blue-500 text-white px-3 py-1 rounded-sm font-semibold cursor-pointer hover:bg-blue-400'
                   >
-                    Continuar
+                    {t('Continuar')}
                   </button>
                 </div>
               </Form>

@@ -4,7 +4,7 @@ export const DarkModeToggle = () => {
   const { dark, setDarkClass } = useDarkClass();
 
   return (
-    <div className='absolute right-0 m-0.5 sm:m-2 rounded-md'>
+    <div className='absolute right-0 mr-2 rounded-md'>
       <button
         className=' text-white dark:text-slate-900 text-3xl px-1 duration-300'
         onClick={setDarkClass}

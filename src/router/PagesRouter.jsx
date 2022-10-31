@@ -14,7 +14,7 @@ export const PagesRouter = () => {
               data >= 1 ? 'bg-blue-500' : 'bg-blue-200'
             } duration-300`}
           >
-            <i class='fa-solid fa-user'></i>
+            <i className='fa-solid fa-user'></i>
           </div>
 
           <div
@@ -27,7 +27,7 @@ export const PagesRouter = () => {
               data >= 2 ? 'bg-blue-500' : 'bg-blue-200'
             } duration-300`}
           >
-            <i class='fa-solid fa-calendar'></i>
+            <i className='fa-solid fa-calendar'></i>
           </div>
           <div
             className={`h-1 w-20  ${
@@ -40,7 +40,7 @@ export const PagesRouter = () => {
               data >= 3 ? 'bg-blue-500' : 'bg-blue-200'
             } duration-300`}
           >
-            <i class='fa-solid fa-money-bill'></i>
+            <i className='fa-solid fa-money-bill'></i>
           </div>
         </div>
       </div>
