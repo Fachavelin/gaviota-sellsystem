@@ -1,13 +1,21 @@
 import { useEffect } from 'react';
 import { Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { useClientStore } from '../hooks';
 import { IndexPage, ReservePage } from '../pages';
 
 export const PagesRouter = () => {
-  const { '*': data } = useParams();
+  // const { '*': data } = useParams();
+  /* const { expireAt } = useParams(); */
 
+  const { startCreate, checkToken } = useClientStore();
+
+  /* useEffect(() => {
+    console.log(expireAt);
+  }, []);
+ */
   return (
     <>
-      <div className='mt-16 mb-3 mx-auto max-w-7xl text-white'>
+      {/* <div className='mt-16 mb-3 mx-auto max-w-7xl text-white'>
         <div className='flex justify-center items-center gap-1'>
           <div
             className={`rounded-2xl px-5 py-4  ${
@@ -43,11 +51,11 @@ export const PagesRouter = () => {
             <i className='fa-solid fa-money-bill'></i>
           </div>
         </div>
-      </div>
+      </div> */}
       <Routes>
         <Route path='/1' element={<IndexPage />} />
         <Route path='/2' element={<ReservePage />} />
-        <Route path='/*' element={<Navigate to='/1' />} />
+        {/* <Route path='/*' element={<Navigate to='/1' />} /> */}
       </Routes>
     </>
   );

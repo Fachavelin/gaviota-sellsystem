@@ -1,7 +1,10 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { useClientStore } from '../hooks/useClientStore';
 import { Layout } from '../layout';
+import { LoadingPage } from '../pages/LoadingPage/LoadingPage';
 import { ThankPages } from '../pages/ThankPage/ThankPages';
+import { HandleParams } from './HandleParams';
 import { PagesRouter } from './PagesRouter';
 
 export const AppRouter = () => {
@@ -19,8 +22,17 @@ export const AppRouter = () => {
       </div>
     );
   }
-
   return (
+    <Routes>
+      <Route path='/expireAt/:expireAt' element={<HandleParams />} />
+
+      <Route path='/reservas/' element={<PagesRouter />} />
+
+      <Route path='/*' element={<Navigate to={'/reserves'} />} />
+    </Routes>
+  );
+
+  /* return (
     <Layout>
       <Routes>
         {authStatus === 'authenticated' ? (
@@ -31,5 +43,5 @@ export const AppRouter = () => {
         <Route path='/*' element={<Navigate to={'/finalizado'} />} />
       </Routes>
     </Layout>
-  );
+  ); */
 };
