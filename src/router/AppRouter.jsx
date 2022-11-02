@@ -26,9 +26,11 @@ export const AppRouter = () => {
     <Routes>
       <Route path='/expireAt/:expireAt' element={<HandleParams />} />
 
-      <Route path='/reservas/' element={<PagesRouter />} />
+      <Route path='/reservas/*' element={<PagesRouter />} />
 
-      <Route path='/*' element={<Navigate to={'/reserves'} />} />
+      <Route path='/' element={<ThankPages />} />
+
+      <Route path='/*' element={<Navigate to={'/reservas/'} />} />
     </Routes>
   );
 

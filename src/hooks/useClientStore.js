@@ -14,7 +14,7 @@ export const useClientStore = () => {
   const startCreate = async (expireAt) => {
     dispatch(onChecking());
     try {
-      const { data } = await api.get(`api/validateLink?expireAt=${expireAt}`);
+      const { data } = await api.get(`api/validateLink/expireAt/${expireAt}`);
 
       console.log(data);
       if (data.error) {
@@ -51,7 +51,7 @@ export const useClientStore = () => {
       return;
     } else {
       try {
-        const { data } = await api.get(`api/validateLink?expireAt=${expireAt}`);
+        const { data } = await api.get(`api/validateLink/expireAt/${expireAt}`);
         if (data.error) {
           startLogout();
           return;

@@ -55,7 +55,7 @@ export const PagesRouter = () => {
       <Routes>
         <Route path='/1' element={<IndexPage />} />
         <Route path='/2' element={<ReservePage />} />
-        {/* <Route path='/*' element={<Navigate to='/1' />} /> */}
+        <Route path='/*' element={<Navigate to='/reservas/1' />} />
       </Routes>
     </>
   );

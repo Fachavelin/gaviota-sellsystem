@@ -30,6 +30,7 @@ const resources = {
       'Seleccionar el pais': 'Seleccionar el pais',
       'Cédula/Pasaporte': 'Cédula/Pasaporte',
       'Crear Reserva': 'Crear Reserva',
+      'Gracias por usar nuestro servicio': 'Gracias por usar nuestro servicio',
     },
   },
   en: {
@@ -55,6 +56,7 @@ const resources = {
       'Seleccionar el pais': 'Chose a Country',
       'Cédula/Pasaporte': 'Id/Passport',
       'Crear Reserva': 'Save Reserve',
+      'Gracias por usar nuestro servicio': 'Thank you for using our service',
     },
   },
 };
