@@ -20,17 +20,21 @@ let validationSchema = Yup.object().shape({
       time: Yup.string().required('El el horario es requerido'),
       date: Yup.date().required('La fecha es requerida'),
       number: Yup.number().required('El número de reservas es requerido'),
+      birthday: Yup.date().required('El cumpleaños es requerido'),
+      phone: Yup.string().required('El número de teléfono es requerido'),
     })
   ),
 });
 
 export const ReservePage = () => {
+  const { t, i18n } = useTranslation();
+
   const initialValues = {
     reserves: [
       {
         passenger: '',
-        reference: 'external',
-        user: 'external', //*
+        reference: 'External',
+        user: 'External', //*
         country: '',
         price: 20,
         passport: '',
@@ -42,7 +46,10 @@ export const ReservePage = () => {
         age: 0,
         isConfirmed: false,
         isPayed: false,
-        isBlocked: false,
+        birthday: '',
+        status: 'Permanente',
+        phone: '',
+        comment: '',
       },
     ],
   };
@@ -50,8 +57,8 @@ export const ReservePage = () => {
   let [type, setType] = useState([
     {
       passenger: '',
-      reference: 'external',
-      user: 'external', //*
+      reference: 'External',
+      user: 'External', //*
       country: '',
       price: 20,
       passport: '',
@@ -63,7 +70,11 @@ export const ReservePage = () => {
       age: 0,
       isConfirmed: false,
       isPayed: false,
-      isBlocked: false,
+      isPayed: false,
+      birthday: '',
+      status: 'Permanente',
+      phone: '',
+      comment: '',
     },
   ]);
   //*Inicializar referencias y paises
@@ -176,8 +187,6 @@ const getReferences = async () => {
     console.log(type);
   };
 
-  const { t, i18n } = useTranslation();
-
   return (
     <div className=''>
       <Title text='Generar Reserva' />
@@ -192,6 +201,10 @@ const getReferences = async () => {
 
               reserves = reserves.map((item) => {
                 return { ...item, date: new Date(item.date) };
+              });
+
+              reserves = reserves.map((item) => {
+                return { ...item, birthday: new Date(item.birthday) };
               });
 
               reserves = reserves.map((item) => {
@@ -364,6 +377,31 @@ const getReferences = async () => {
                                   )}
                               </div>
 
+                              {/* //?Telefono */}
+                              <div className='mb-4'>
+                                <label className='block text-base font-bold '>
+                                  {t('Número de teléfono')}
+                                </label>
+                                <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
+                                  <Field
+                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    type='text'
+                                    placeholder={t('Número de teléfono')}
+                                    name={`reserves.${index}.phone`}
+                                  />
+                                </div>
+                                {errors.reserves &&
+                                  errors.reserves[index] &&
+                                  errors.reserves[index].phone &&
+                                  touched.reserves &&
+                                  touched.reserves[index] &&
+                                  touched.reserves[index].phone && (
+                                    <p className='text-red-500 font-medium '>
+                                      {errors.reserves[index].phone}
+                                    </p>
+                                  )}
+                              </div>
+
                               {/* //?Pais */}
                               <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
@@ -402,25 +440,25 @@ const getReferences = async () => {
 
                               {/* //?Edad*/}
                               <div className='mb-4'>
-                                <label className='block  text-base font-bold '>
-                                  {t('Edad')}
+                                <label className='block text-base font-bold'>
+                                  {t('Fecha de nacimiento')}
                                 </label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
                                     className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
-                                    type='number'
-                                    placeholder='Edad'
-                                    name={`reserves.${index}.age`}
+                                    type='date'
+                                    placeholder='Fecha'
+                                    name={`reserves.${index}.birthday`}
                                   />
                                 </div>
                                 {errors.reserves &&
                                   errors.reserves[index] &&
-                                  errors.reserves[index].age &&
+                                  errors.reserves[index].birthday &&
                                   touched.reserves &&
                                   touched.reserves[index] &&
-                                  touched.reserves[index].age && (
+                                  touched.reserves[index].birthday && (
                                     <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].age}
+                                      {errors.reserves[index].birthday}
                                     </p>
                                   )}
                               </div>
@@ -446,6 +484,66 @@ const getReferences = async () => {
                                   touched.reserves[index].passport && (
                                     <p className='text-red-500 font-medium '>
                                       {errors.reserves[index].passport}
+                                    </p>
+                                  )}
+                              </div>
+
+                              {/* //!Estado esta en option para que se pueda traducir en tiempo real */}
+                              {/* //?Estado */}
+                              <div className='mb-4'>
+                                <label className='block  text-base font-bold '>
+                                  Estado
+                                </label>
+                                <div className='flex items-center rounded-lg'>
+                                  <Field
+                                    className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
+                                    name={`reserves.${index}.status`}
+                                    as='select'
+                                  >
+                                    <option value={'Permanente'}>
+                                      {t('Permanente')}
+                                    </option>
+                                    <option value={'Temporal'}>
+                                      {t('Temporal')}
+                                    </option>
+                                    <option value={'Turista'}>
+                                      {t('Turista')}
+                                    </option>
+                                  </Field>
+                                </div>
+                                {errors.reserves &&
+                                  errors.reserves[index] &&
+                                  errors.reserves[index].status &&
+                                  touched.reserves &&
+                                  touched.reserves[index] &&
+                                  touched.reserves[index].status && (
+                                    <p className='text-red-500 font-medium '>
+                                      {errors.reserves[index].status}
+                                    </p>
+                                  )}
+                              </div>
+
+                              {/* //?Observaciones */}
+                              <div className='mb-4'>
+                                <label className='block text-base font-bold '>
+                                  {t('Observaciones')}
+                                </label>
+                                <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
+                                  <Field
+                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    type='text'
+                                    placeholder={t('Observaciones')}
+                                    name={`reserves.${index}.comment`}
+                                  />
+                                </div>
+                                {errors.reserves &&
+                                  errors.reserves[index] &&
+                                  errors.reserves[index].comment &&
+                                  touched.reserves &&
+                                  touched.reserves[index] &&
+                                  touched.reserves[index].comment && (
+                                    <p className='text-red-500 font-medium '>
+                                      {errors.reserves[index].comment}
                                     </p>
                                   )}
                               </div>

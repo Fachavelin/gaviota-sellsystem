@@ -5,6 +5,7 @@ import {
   clearErrorMessage,
   onChecking,
   onLogin,
+  onLogout,
 } from '../store/slices/clientSlice';
 
 export const useClientStore = () => {
@@ -22,14 +23,7 @@ export const useClientStore = () => {
         return;
       }
       localStorage.setItem('expireAt', expireAt);
-      dispatch(
-        onLogin({
-          name: '',
-          email: '',
-          phoneNumber: '',
-          documentId: '',
-        })
-      );
+      dispatch(onLogin({}));
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +38,7 @@ export const useClientStore = () => {
     //todo Se verifica el Token
 
     const expireAt = localStorage.getItem('expireAt');
-    const client = localStorage.getItem('client');
+    // const client = localStorage.getItem('client');
 
     if (!expireAt) {
       await startLogout();
@@ -56,7 +50,7 @@ export const useClientStore = () => {
           startLogout();
           return;
         }
-        dispatch(onLogin(client));
+        dispatch(onLogin());
       } catch (error) {
         console.log(error);
       }
@@ -65,7 +59,7 @@ export const useClientStore = () => {
 
   const startLogout = async (errorMessage) => {
     localStorage.removeItem('expireAt');
-    localStorage.removeItem('client');
+    // localStorage.removeItem('client');
     dispatch(onLogout({ errorMessage }));
     setTimeout(() => {
       dispatch(clearErrorMessage());
@@ -80,5 +74,6 @@ export const useClientStore = () => {
 
     //*Methods
     startCreate,
+    checkToken,
   };
 };

@@ -11,7 +11,7 @@ export const HandleParams = () => {
 
   useEffect(() => {
     startCreate(expireAt);
-    navigate('/reservas/');
+    navigate('/reservas/1');
   }, []);
 
   return (

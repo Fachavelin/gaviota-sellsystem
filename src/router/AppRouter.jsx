@@ -8,42 +8,28 @@ import { HandleParams } from './HandleParams';
 import { PagesRouter } from './PagesRouter';
 
 export const AppRouter = () => {
-  const { status: authStatus, msg } = useClientStore();
+  const { status: authStatus, msg, checkToken } = useClientStore();
+
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   if (authStatus === 'checking') {
     return (
-      <div className='h-screen bg-azul flex justify-center items-center '>
-        <div className='text-white'>
-          <p className='text-center text-3xl'>
-            <i className='ml-3 fa-solid fa-spinner animate-spin'></i>
-          </p>
-          <p className='text-xl'>Cargando</p>
-        </div>
-      </div>
+      <Routes>
+        <Route path='/expireAt/:expireAt' element={<HandleParams />} />
+      </Routes>
     );
   }
   return (
     <Routes>
-      <Route path='/expireAt/:expireAt' element={<HandleParams />} />
+      {authStatus === 'authenticated' ? (
+        <Route path='/reservas/*' element={<PagesRouter />} />
+      ) : (
+        <Route path='/' element={<ThankPages />} />
+      )}
 
-      <Route path='/reservas/*' element={<PagesRouter />} />
-
-      <Route path='/' element={<ThankPages />} />
-
-      <Route path='/*' element={<Navigate to={'/reservas/'} />} />
+      <Route path='/*' element={<Navigate to={'/'} />} />
     </Routes>
   );
-
-  /* return (
-    <Layout>
-      <Routes>
-        {authStatus === 'authenticated' ? (
-          <Route path='/*' element={<PagesRouter />} />
-        ) : (
-          <Route path='/finalizado' element={<ThankPages />} />
-        )}
-        <Route path='/*' element={<Navigate to={'/finalizado'} />} />
-      </Routes>
-    </Layout>
-  ); */
 };
