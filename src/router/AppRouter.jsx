@@ -26,10 +26,10 @@ export const AppRouter = () => {
       {authStatus === 'authenticated' ? (
         <Route path='/reservas/*' element={<PagesRouter />} />
       ) : (
-        <Route path='/' element={<ThankPages />} />
+        <Route path='/*' element={<ThankPages />} />
       )}
 
-      <Route path='/*' element={<Navigate to={'/'} />} />
+      <Route path='/*' element={<Navigate to={'/reservas/'} />} />
     </Routes>
   );
 };
