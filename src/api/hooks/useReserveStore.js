@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { api } from '../';
-import { onEdit } from '../../store/slices/reserveSlice';
+import { onEdit, onLoading } from '../../store/slices/reserveSlice';
 
 export const useReserveStore = () => {
   const { loading, reserve, msg } = useSelector((state) => state.reserve);
@@ -11,6 +11,17 @@ export const useReserveStore = () => {
     dispatch(onEdit(res));
   };
 
+  const startCreate = (res = []) => {
+    dispatch(onLoading());
+
+    try {
+      const { data } = api.post('api/sss');
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     //*Props
     loading,
@@ -18,5 +29,7 @@ export const useReserveStore = () => {
     msg,
 
     //*Methods
+    startAdd,
+    startCreate,
   };
 };

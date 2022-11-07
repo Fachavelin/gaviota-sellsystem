@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { useClientStore } from '../hooks';
 import { Layout } from '../layout';
 import { IndexPage, ReservePage } from '../pages';
+import { PaymentPage } from '../pages/PaymentPage/PaymentPage';
 
 export const PagesRouter = () => {
   const { '*': data } = useParams();
@@ -35,6 +36,7 @@ export const PagesRouter = () => {
       </div>
       <Routes>
         <Route path='/1' element={<ReservePage />} />
+        <Route path='/2' element={<PaymentPage />} />
         <Route path='/*' element={<Navigate to='/reservas/1' />} />
       </Routes>
     </Layout>

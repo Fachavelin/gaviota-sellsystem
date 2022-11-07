@@ -5,6 +5,8 @@ import { Field, FieldArray, Form, Formik } from 'formik';
 import { useState, useEffect } from 'react';
 import api from '../../api/api';
 import { useTranslation } from 'react-i18next';
+import { useReserveStore } from '../../api/hooks/useReserveStore';
+import { useNavigate } from 'react-router-dom';
 
 let validationSchema = Yup.object().shape({
   reserves: Yup.array().of(
@@ -29,23 +31,27 @@ let validationSchema = Yup.object().shape({
 export const ReservePage = () => {
   const { t, i18n } = useTranslation();
 
+  const { startAdd } = useReserveStore();
+
+  const navigate = useNavigate();
+
   const initialValues = {
     reserves: [
       {
         passenger: '',
         reference: 'External',
-        user: 'External', //*
+        user: 'External',
         country: '',
         price: 20,
         passport: '',
-        ship: 'undefined',
+        ship: 'Undefined',
         route: 'SC-SX',
         date: '',
         time: 'Am',
         number: 1, //*
         age: 0,
-        isConfirmed: false,
-        isPayed: false,
+        isConfirmed: true,
+        isPayed: true,
         birthday: '',
         status: 'Permanente',
         phone: '',
@@ -62,27 +68,20 @@ export const ReservePage = () => {
       country: '',
       price: 20,
       passport: '',
-      ship: 'undefined',
+      ship: 'Undefined',
       route: 'SC-SX',
       date: '',
       time: 'Am',
       number: 1, //*
       age: 0,
-      isConfirmed: false,
-      isPayed: false,
-      isPayed: false,
+      isConfirmed: true,
+      isPayed: true,
       birthday: '',
       status: 'Permanente',
       phone: '',
       comment: '',
     },
   ]);
-  //*Inicializar referencias y paises
-  /* const [references, setReferences] = useState([]);
-const getReferences = async () => {
-  const { data } = await api.get('/api/getAllReferences');
-  setReferences(sortBy(data, ['name']));
-}; */
 
   const [countries, setCountries] = useState([]);
   const getCountries = async () => {
@@ -224,6 +223,8 @@ const getReferences = async () => {
               }); */
 
               console.log(reserves);
+              startAdd(reserves);
+              navigate('/reservas/2');
             }}
           >
             {({ values, errors, touched }) => (
