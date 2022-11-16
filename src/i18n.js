@@ -17,8 +17,8 @@ const resources = {
       'El correo electrónico es requerido':
         'El correo electrónico es requerido',
       'Debe ser un número': 'Debe ser un número',
-      'El numero de teléfono es requerido':
-        'El numero de teléfono es requerido',
+      'El número de teléfono es requerido':
+        'El número de teléfono es requerido',
       'El documento de identificación es requerido':
         'El documento de identificación es requerido',
       Continuar: 'Continuar',
@@ -37,6 +37,11 @@ const resources = {
       Permanente: 'Permanente',
       Temporal: 'Temporal',
       Turista: 'Turista',
+      'El pais es requerido': 'El pais es requerido',
+      'Este parámetro es requerido': 'Este parámetro es requerido',
+      'La ruta es requerida': 'La ruta es requerida',
+      'La fecha es requerida': 'La fecha es requerida',
+      'El cumpleaños es requerido': 'El cumpleaños es requerido',
     },
   },
   en: {
@@ -50,7 +55,7 @@ const resources = {
       'El nombre es requerido': 'The name is required',
       'El correo electrónico es requerido': 'The email is required',
       'Debe ser un número': 'This field must be a number',
-      'El numero de teléfono es requerido': 'The phone number is required',
+      'El número de teléfono es requerido': 'The phone number is required',
       'El documento de identificación es requerido':
         'The identification document is required',
       Continuar: 'Continue',
@@ -69,6 +74,11 @@ const resources = {
       Permanente: 'Permanent',
       Temporal: 'Temporary',
       Turista: 'Tourist',
+      'El pais es requerido': 'The country is required',
+      'Este parámetro es requerido': 'This parameter is required',
+      'La ruta es requerida': 'La ruta es requerida',
+      'La fecha es requerida': 'The date is required',
+      'El cumpleaños es requerido': 'The birthday is required',
     },
   },
 };

@@ -7,79 +7,72 @@ import api from '../../api/api';
 import { useTranslation } from 'react-i18next';
 import { useReserveStore } from '../../api/hooks/useReserveStore';
 import { useNavigate } from 'react-router-dom';
-
-let validationSchema = Yup.object().shape({
-  reserves: Yup.array().of(
-    Yup.object().shape({
-      passenger: Yup.string().required('El nombre es requerido'),
-      reference: Yup.string().required('El proovedor es requerido'),
-      // country: Yup.string().required('El pais es requerido'),
-      // age: Yup.number().typeError('Debe ser un número').required('La edad es requerida'),
-      price: Yup.number().required('El precio es requerido'),
-      // passport: Yup.string().required('Este parámetro es requerido'),
-      ship: Yup.string().required('El barco es requerido'),
-      route: Yup.string().required('La ruta es requerida'),
-      time: Yup.string().required('El el horario es requerido'),
-      date: Yup.date().required('La fecha es requerida'),
-      number: Yup.number().required('El número de reservas es requerido'),
-      birthday: Yup.date().required('El cumpleaños es requerido'),
-      phone: Yup.string().required('El número de teléfono es requerido'),
-    })
-  ),
-});
+import { customSwal } from '../../helpers';
 
 export const ReservePage = () => {
   const { t, i18n } = useTranslation();
 
-  const { startAdd } = useReserveStore();
+  const swal = customSwal();
+
+  let validationSchema = Yup.object().shape({
+    reserves: Yup.array().of(
+      Yup.object().shape({
+        passenger: Yup.string().required(t('El nombre es requerido')),
+        country: Yup.string().required(t('El pais es requerido')),
+        passport: Yup.string().required(t('Este parámetro es requerido')),
+        route: Yup.string().required(t('La ruta es requerida')),
+        time: Yup.string().required(t('El el horario es requerido')),
+        date: Yup.date().required(t('La fecha es requerida')),
+        birthday: Yup.date().required(t('El cumpleaños es requerido')),
+        phone: Yup.string().required(t('El número de teléfono es requerido')),
+      })
+    ),
+  });
+
+  const { startAdd, startCreate, loading, msg } = useReserveStore();
 
   const navigate = useNavigate();
+
+  let todayDate = new Date('07/01/2022');
+  todayDate.setHours(0, 0, 0);
+  todayDate = todayDate.toLocaleDateString('en-CA');
+
+  let birthdayDate = new Date('07/01/1987');
+  birthdayDate.setHours(0, 0, 0);
 
   const initialValues = {
     reserves: [
       {
-        passenger: '',
-        reference: 'External',
-        user: 'External',
-        country: '',
-        price: 20,
-        passport: '',
-        ship: 'Undefined',
+        country: 'Barbados',
+        date: todayDate,
+        passenger: 'Melisa Lucas',
+        passport: '2000105961',
         route: 'SC-SX',
-        date: '',
         time: 'Am',
-        number: 1, //*
-        age: 0,
-        isConfirmed: true,
-        isPayed: true,
+        phone: '0982291894',
         birthday: '',
-        status: 'Permanente',
-        phone: '',
-        comment: '',
+        comment: 'Viajero con problemas de mareo',
+        status: 'Residente',
+        paymentDate: todayDate,
+        number: 1,
       },
     ],
   };
 
   let [type, setType] = useState([
     {
-      passenger: '',
-      reference: 'External',
-      user: 'External', //*
-      country: '',
-      price: 20,
-      passport: '',
-      ship: 'Undefined',
+      country: 'Barbados',
+      date: todayDate,
+      passenger: 'Melisa Lucas',
+      passport: '2000105961',
       route: 'SC-SX',
-      date: '',
       time: 'Am',
-      number: 1, //*
-      age: 0,
-      isConfirmed: true,
-      isPayed: true,
+      phone: '0982291894',
       birthday: '',
-      status: 'Permanente',
-      phone: '',
-      comment: '',
+      comment: 'Viajero con problemas de mareo',
+      status: 'Residente',
+      paymentDate: todayDate,
+      number: 1,
     },
   ]);
 
@@ -168,8 +161,15 @@ export const ReservePage = () => {
     console.log('f', finalName);
     console.log('f value', value);
 
-    if (!isNaN(value) && finalName[2] !== 'passport') {
-      value = parseInt(value);
+    if (!isNaN(value)) {
+      if (
+        finalName[2] !== 'passport' &&
+        finalName[2] !== 'phone' &&
+        finalName[2] !== 'notes' &&
+        finalName[2] !== 'comment'
+      ) {
+        value = parseInt(value);
+      }
     }
 
     const newArray = reserves.map((item, i) => {
@@ -186,6 +186,14 @@ export const ReservePage = () => {
     console.log(type);
   };
 
+  const getRoute = (value = '') => {
+    if (value === '') {
+      return '';
+    }
+    let route = routes.find((data) => data.value === value);
+    return route.name;
+  };
+
   return (
     <div className=''>
       <Title text='Generar Reserva' />
@@ -195,8 +203,18 @@ export const ReservePage = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={async (values, { resetForm }) => {
-              console.log('click');
               let { reserves } = values;
+
+              let question = '';
+
+              reserves.forEach((item) => {
+                question =
+                  question +
+                  `${getRoute(item.route)} - ${item.time} - ${item.number} : ${
+                    item.date
+                  }` +
+                  '</br>';
+              });
 
               reserves = reserves.map((item) => {
                 return { ...item, date: new Date(item.date) };
@@ -207,24 +225,27 @@ export const ReservePage = () => {
               });
 
               reserves = reserves.map((item) => {
-                return { ...item, price: parseInt(item.price) };
+                return {
+                  ...item,
+                  paymentDate: new Date(todayDate),
+                };
               });
 
-              /*  reserves = reserves.map((item) => {
-                return { ...item, isConfirmed: parseBool(item.isConfirmed) };
-              });
-
-              reserves = reserves.map((item) => {
-                return { ...item, isPayed: parseBool(item.isPayed) };
-              });
-
-              reserves = reserves.map((item) => {
-                return { ...item, isBlocked: parseBool(item.isBlocked) };
-              }); */
-
-              console.log(reserves);
-              startAdd(reserves);
-              navigate('/reservas/2');
+              swal
+                .fire({
+                  icon: 'question',
+                  title: `¿Crear reserva(s)?`,
+                  html: `${question}`,
+                  showCancelButton: true,
+                  cancelButtonText: 'Cancelar',
+                  confirmButtonText: 'Crear',
+                })
+                .then((result) => {
+                  if (result.isConfirmed) {
+                    startCreate(reserves);
+                    navigate('/reservas/2');
+                  }
+                });
             }}
           >
             {({ values, errors, touched }) => (

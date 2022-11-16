@@ -11,11 +11,11 @@ export const useReserveStore = () => {
     dispatch(onEdit(res));
   };
 
-  const startCreate = (res = []) => {
+  const startCreate = async (res = []) => {
     dispatch(onLoading());
 
     try {
-      const { data } = api.post('api/sss');
+      const { data } = await api.post('api/addReservesExternal', res);
       console.log(data);
     } catch (error) {
       console.log(error);
