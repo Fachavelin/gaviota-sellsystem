@@ -75,5 +75,6 @@ export const useClientStore = () => {
     //*Methods
     startCreate,
     checkToken,
+    startLogout,
   };
 };

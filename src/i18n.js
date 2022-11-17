@@ -27,6 +27,7 @@ const resources = {
       Horario: 'Horario',
       Pais: 'Pais',
       Edad: 'Edad',
+      Estado: 'Estado',
       'Seleccionar el pais': 'Seleccionar el pais',
       'Cédula/Pasaporte': 'Cédula/Pasaporte',
       'Crear Reserva': 'Crear Reserva',
@@ -42,6 +43,11 @@ const resources = {
       'La ruta es requerida': 'La ruta es requerida',
       'La fecha es requerida': 'La fecha es requerida',
       'El cumpleaños es requerido': 'El cumpleaños es requerido',
+      '¿Crear reserva(s)?': '¿Crear reserva(s)?',
+      Crear: 'Crear',
+      Cancelar: 'Cancelar',
+      'Gracias por usar nuestro servicio, nos comunicaremos muy pronto':
+        'Gracias por usar nuestro servicio, nos comunicaremos muy pronto',
     },
   },
   en: {
@@ -64,6 +70,7 @@ const resources = {
       Horario: 'Time',
       Pais: 'Country',
       Edad: 'Age',
+      Estado: 'State',
       'Seleccionar el pais': 'Chose a Country',
       'Cédula/Pasaporte': 'Id/Passport',
       'Crear Reserva': 'Save Reserve',
@@ -79,6 +86,11 @@ const resources = {
       'La ruta es requerida': 'La ruta es requerida',
       'La fecha es requerida': 'The date is required',
       'El cumpleaños es requerido': 'The birthday is required',
+      '¿Crear reserva(s)?': '¿Create reserve(s)?',
+      Crear: 'Create',
+      Cancelar: 'Cancel',
+      'Gracias por usar nuestro servicio, nos comunicaremos muy pronto':
+        'Thanks four using our service',
     },
   },
 };

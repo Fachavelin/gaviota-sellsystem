@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useReserveStore } from '../../api/hooks/useReserveStore';
 import { useNavigate } from 'react-router-dom';
 import { customSwal } from '../../helpers';
+import { useClientStore } from '../../hooks';
 
 export const ReservePage = () => {
   const { t, i18n } = useTranslation();
@@ -30,6 +31,8 @@ export const ReservePage = () => {
   });
 
   const { startAdd, startCreate, loading, msg } = useReserveStore();
+
+  const { startLogout } = useClientStore();
 
   const navigate = useNavigate();
 
@@ -234,16 +237,20 @@ export const ReservePage = () => {
               swal
                 .fire({
                   icon: 'question',
-                  title: `¿Crear reserva(s)?`,
+                  title: `${t('¿Crear reserva(s)?')}`,
                   html: `${question}`,
                   showCancelButton: true,
-                  cancelButtonText: 'Cancelar',
-                  confirmButtonText: 'Crear',
+                  cancelButtonText: `${t('Cancelar')}`,
+                  confirmButtonText: `${t('Crear')}`,
                 })
                 .then((result) => {
                   if (result.isConfirmed) {
                     startCreate(reserves);
-                    navigate('/reservas/2');
+                    /* startLogout(
+                      t(
+                        'Gracias por usar nuestro servicio, nos comunicaremos muy pronto'
+                      )
+                    ); */
                   }
                 });
             }}
@@ -514,7 +521,7 @@ export const ReservePage = () => {
                               {/* //?Estado */}
                               <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
-                                  Estado
+                                  {t('Estado')}
                                 </label>
                                 <div className='flex items-center rounded-lg'>
                                   <Field
@@ -569,43 +576,6 @@ export const ReservePage = () => {
                                     </p>
                                   )}
                               </div>
-
-                              {/* //?Confirmado y Pagado */}
-                              {/* <div className=''>
-                                <label className='block text-base font-bold '>
-                                  Estado
-                                </label>
-                                <div className='flex items-center gap-3'>
-                                  <label className='block text-base font-bold '>
-                                    Confirmado
-                                  </label>
-                                  <Field
-                                    className='h-5 w-5 rounded-xl border-2 border-blue-300 dark:border-slate-700 cursor-pointer'
-                                    type='checkbox'
-                                    name={`reserves.${index}.isConfirmed`}
-                                  />
-                                </div>
-                                <div className='flex items-center gap-3'>
-                                  <label className='block text-base font-bold '>
-                                    Pagado
-                                  </label>
-                                  <Field
-                                    className='h-5 w-5 rounded-xl border-2 border-blue-300 dark:border-slate-700 cursor-pointer'
-                                    type='checkbox'
-                                    name={`reserves.${index}.isPayed`}
-                                  />
-                                </div>
-                                <div className='flex items-center gap-3'>
-                                  <label className='block text-base font-bold '>
-                                    Bloqueado
-                                  </label>
-                                  <Field
-                                    className='h-5 w-5 rounded-xl border-2 border-blue-300 dark:border-slate-700 cursor-pointer'
-                                    type='checkbox'
-                                    name={`reserves.${index}.isBlocked`}
-                                  />
-                                </div>
-                              </div> */}
                             </div>
                           </div>
                         ))}
@@ -613,7 +583,7 @@ export const ReservePage = () => {
                   )}
                 </FieldArray>
                 <div className='flex justify-end pr-4 mb-1'>
-                  {/* <button
+                  <button
                     className='bg-blue-500 text-white px-3 py-1 rounded-sm font-semibold cursor-pointer hover:bg-blue-400'
                     type='submit'
                     disabled={loading}
@@ -621,15 +591,8 @@ export const ReservePage = () => {
                     {loading ? (
                       <i className='fa-solid fa-spinner animate-spin'></i>
                     ) : (
-                      'Crear Reserva'
+                      t('Crear Reserva')
                     )}
-                  </button> */}
-                  <button
-                    className='bg-blue-500 text-white px-3 py-1 rounded-sm font-semibold cursor-pointer hover:bg-blue-400'
-                    type='submit'
-                    /* disabled={loading} */
-                  >
-                    {t('Crear Reserva')}
                   </button>
                 </div>
               </Form>

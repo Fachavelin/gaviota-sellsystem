@@ -11,7 +11,7 @@ export const PagesRouter = () => {
   return (
     <Layout>
       <div className='mt-16 mb-3 mx-auto max-w-7xl text-white'>
-        <div className='flex justify-center items-center gap-1'>
+        {/* <div className='flex justify-center items-center gap-1'>
           <div
             className={`rounded-2xl px-5 py-4  ${
               data >= 1 ? 'bg-blue-500' : 'bg-blue-200'
@@ -32,7 +32,7 @@ export const PagesRouter = () => {
           >
             <i className='fa-solid fa-money-bill'></i>
           </div>
-        </div>
+        </div> */}
       </div>
       <Routes>
         <Route path='/1' element={<ReservePage />} />
