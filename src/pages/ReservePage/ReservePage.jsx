@@ -36,7 +36,7 @@ export const ReservePage = () => {
 
   const navigate = useNavigate();
 
-  let todayDate = new Date('07/01/2022');
+  let todayDate = new Date();
   todayDate.setHours(0, 0, 0);
   todayDate = todayDate.toLocaleDateString('en-CA');
 
@@ -46,15 +46,15 @@ export const ReservePage = () => {
   const initialValues = {
     reserves: [
       {
-        country: 'Barbados',
+        country: '',
         date: todayDate,
-        passenger: 'Melisa Lucas',
-        passport: '2000105961',
+        passenger: '',
+        passport: '',
         route: 'SC-SX',
         time: 'Am',
-        phone: '0982291894',
+        phone: '',
         birthday: '',
-        comment: 'Viajero con problemas de mareo',
+        comment: '',
         status: 'Residente',
         paymentDate: todayDate,
         number: 1,
@@ -64,15 +64,15 @@ export const ReservePage = () => {
 
   let [type, setType] = useState([
     {
-      country: 'Barbados',
+      country: '',
       date: todayDate,
-      passenger: 'Melisa Lucas',
-      passport: '2000105961',
+      passenger: '',
+      passport: '',
       route: 'SC-SX',
       time: 'Am',
-      phone: '0982291894',
+      phone: '',
       birthday: '',
-      comment: 'Viajero con problemas de mareo',
+      comment: '',
       status: 'Residente',
       paymentDate: todayDate,
       number: 1,

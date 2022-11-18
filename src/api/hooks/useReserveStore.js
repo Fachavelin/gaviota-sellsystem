@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { api } from '../';
@@ -12,6 +13,8 @@ import {
 export const useReserveStore = () => {
   const { loading, reserve, msg } = useSelector((state) => state.reserve);
   const dispatch = useDispatch();
+
+  const { t } = useTranslation();
 
   const { startLogout } = useClientStore();
 
@@ -32,7 +35,7 @@ export const useReserveStore = () => {
         return;
       }
       dispatch(onFinished(data));
-      startLogout();
+      startLogout(t('Tu reserva fue agregada de manera éxitosa'));
     } catch (error) {
       console.log(error);
     }

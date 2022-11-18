@@ -4,7 +4,7 @@ export const Header = () => {
       <div className='max-w-7xl mx-auto flex items-center'>
         <img
           className='object-cover object-center h-16 w-40 mt-2 ml-7'
-          src='/images/DSD_logo-min.png'
+          src='/images/login_icon.png'
           alt=''
         />
       </div>

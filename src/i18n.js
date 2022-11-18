@@ -48,6 +48,8 @@ const resources = {
       Cancelar: 'Cancelar',
       'Gracias por usar nuestro servicio, nos comunicaremos muy pronto':
         'Gracias por usar nuestro servicio, nos comunicaremos muy pronto',
+      'Tu reserva fue agregada de manera éxitosa':
+        'Tu reserva fue agregada de manera éxitosa',
     },
   },
   en: {
@@ -91,6 +93,8 @@ const resources = {
       Cancelar: 'Cancel',
       'Gracias por usar nuestro servicio, nos comunicaremos muy pronto':
         'Thanks four using our service',
+      'Tu reserva fue agregada de manera éxitosa':
+        'Your reservation was added successfully',
     },
   },
 };

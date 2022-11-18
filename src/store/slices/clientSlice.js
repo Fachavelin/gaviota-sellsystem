@@ -21,7 +21,7 @@ export const clientSlice = createSlice({
     onLogout: (state, { payload }) => {
       state.status = 'not-authenticated';
       state.client = {};
-      state.errorMessage = payload.errorMessage;
+      state.errorMessage = payload;
     },
     clearErrorMessage: (state) => {
       state.errorMessage = undefined;

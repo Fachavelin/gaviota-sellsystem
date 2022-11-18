@@ -9,7 +9,7 @@ import {
 } from '../store/slices/clientSlice';
 
 export const useClientStore = () => {
-  const { status, client, msg } = useSelector((state) => state.client);
+  const { status, client, errorMessage } = useSelector((state) => state.client);
   const dispatch = useDispatch();
 
   const startCreate = async (expireAt) => {
@@ -60,7 +60,7 @@ export const useClientStore = () => {
   const startLogout = async (errorMessage) => {
     localStorage.removeItem('expireAt');
     // localStorage.removeItem('client');
-    dispatch(onLogout({ errorMessage }));
+    dispatch(onLogout(errorMessage));
     setTimeout(() => {
       dispatch(clearErrorMessage());
     }, 10);
@@ -70,7 +70,7 @@ export const useClientStore = () => {
     //*Props
     status,
     client,
-    msg,
+    errorMessage,
 
     //*Methods
     startCreate,
