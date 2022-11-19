@@ -21,7 +21,7 @@ export const ReservePage = () => {
         passenger: Yup.string().required(t('El nombre es requerido')),
         country: Yup.string().required(t('El pais es requerido')),
         passport: Yup.string().required(t('Este parámetro es requerido')),
-        route: Yup.string().required(t('La ruta es requerida')),
+        // route: Yup.string().required(t('La ruta es requerida')),
         time: Yup.string().required(t('El el horario es requerido')),
         date: Yup.date().required(t('La fecha es requerida')),
         birthday: Yup.date().required(t('El cumpleaños es requerido')),
@@ -35,6 +35,43 @@ export const ReservePage = () => {
   const { startLogout } = useClientStore();
 
   const navigate = useNavigate();
+
+  const [routes, setRoutes] = useState([
+    {
+      name: 'San Cristobal - Santa Cruz',
+      value: 'SC-SX',
+    },
+    {
+      name: 'Santa Cruz - San Cristobal',
+      value: 'SX-SC',
+    },
+    {
+      name: 'Santa Cruz - Isabela',
+      value: 'SX-IB',
+    },
+    {
+      name: 'Isabela - Santa Cruz',
+      value: 'IB-SX',
+    },
+    {
+      name: 'Santa Cruz - Floreana',
+      value: 'SX-FL',
+    },
+    {
+      name: 'Floreana - Santa Cruz',
+      value: 'FL-SX',
+    },
+  ]);
+
+  const [formRoute, setFormRoute] = useState(routes[0].value);
+
+  const handleRouteSelect = (e) => {
+    e.preventDefault();
+
+    console.log(e.target.value);
+
+    setFormRoute(e.target.value);
+  };
 
   let todayDate = new Date();
   todayDate.setHours(0, 0, 0);
@@ -50,7 +87,7 @@ export const ReservePage = () => {
         date: todayDate,
         passenger: '',
         passport: '',
-        route: 'SC-SX',
+        route: '',
         time: 'Am',
         phone: '',
         birthday: '',
@@ -68,7 +105,7 @@ export const ReservePage = () => {
       date: todayDate,
       passenger: '',
       passport: '',
-      route: 'SC-SX',
+      route: '',
       time: 'Am',
       phone: '',
       birthday: '',
@@ -106,33 +143,6 @@ export const ReservePage = () => {
     'Gladel',
     'Gabi',
     'Neptuno',
-  ]);
-
-  const [routes, setRoutes] = useState([
-    {
-      name: 'San Cristobal - Santa Cruz',
-      value: 'SC-SX',
-    },
-    {
-      name: 'Santa Cruz - San Cristobal',
-      value: 'SX-SC',
-    },
-    {
-      name: 'Santa Cruz - Isabela',
-      value: 'SX-IB',
-    },
-    {
-      name: 'Isabela - Santa Cruz',
-      value: 'IB-SX',
-    },
-    {
-      name: 'Santa Cruz - Floreana',
-      value: 'SX-FL',
-    },
-    {
-      name: 'Floreana - Santa Cruz',
-      value: 'FL-SX',
-    },
   ]);
 
   const [siNo, setSiNo] = useState([
@@ -202,6 +212,37 @@ export const ReservePage = () => {
       <Title text='Generar Reserva' />
       <div className='mx-auto max-w-7xl'>
         <div className='bg-white dark:bg-slate-800  w-full h-full p-4'>
+          <div className='flex gap-6 mx-4 mt-4'>
+            <div>
+              <label className='block  text-base font-bold '>{t('Ruta')}</label>
+              <select
+                className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
+                name={`route`}
+                onChange={handleRouteSelect}
+              >
+                {routes.map((item, key) => (
+                  <option key={key} className='border-none' value={item.value}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className='block  text-base font-bold '>
+                {t('Horario')}
+              </label>
+              <select
+                className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
+                name={`time`}
+              >
+                {times.map((item, key) => (
+                  <option key={key} className='border-none' value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -209,6 +250,10 @@ export const ReservePage = () => {
               let { reserves } = values;
 
               let question = '';
+
+              reserves = reserves.map((item) => {
+                return { ...item, route: formRoute };
+              });
 
               reserves.forEach((item) => {
                 question =
@@ -259,8 +304,8 @@ export const ReservePage = () => {
               <Form>
                 <FieldArray name='reserves'>
                   {({ insert, remove, push }) => (
-                    <div className='m-4  rounded-lg'>
-                      <div className='flex justify-between mx-5 my-3'>
+                    <div className='mb-4 mx-4 rounded-lg'>
+                      <div className='flex justify-between mx-5'>
                         {/* <div>Número de formularios: {count}</div> */}
                         <div className=''></div>
                       </div>
@@ -271,21 +316,27 @@ export const ReservePage = () => {
                             className='dark:border-slate-700 border-2 mt-6 rounded-lg'
                             onChange={(e) => handleFormChange(e, values, index)}
                           >
-                            <div className='flex justify-end pt-4 pr-4'>
-                              <button
-                                type='button'
-                                className='bg-indigo-500 text-white px-2.5 py-1 rounded-lg font-semibold cursor-pointer hover:bg-indigo-400'
-                                onClick={() => push(type[index])}
-                              >
-                                <i className='fa-solid fa-plus'></i>
-                              </button>
-                              <button
-                                type='button'
-                                onClick={() => remove(index)}
-                                className='ml-1 bg-red-500 text-white px-2.5 py-1 rounded-lg font-semibold cursor-pointer hover:bg-red-400'
-                              >
-                                <i className='fa-solid fa-minus'></i>
-                              </button>
+                            <div className='flex justify-between pt-4 px-4'>
+                              <p className='dark:text-white px-2.5 py-1 rounded-lg font-bold  text-xl '>
+                                {t('Pasajero ')}
+                                {index + 1}
+                              </p>
+                              <div>
+                                <button
+                                  type='button'
+                                  className='bg-indigo-500 text-white px-2.5 py-1 rounded-lg font-semibold cursor-pointer hover:bg-indigo-400'
+                                  onClick={() => push(type[index])}
+                                >
+                                  {t('Agregar pasajero')}
+                                </button>
+                                <button
+                                  type='button'
+                                  onClick={() => remove(index)}
+                                  className='ml-1 bg-red-500 text-white px-2.5 py-1 rounded-lg font-semibold cursor-pointer hover:bg-red-400'
+                                >
+                                  {t('Eliminar pasajero')}
+                                </button>
+                              </div>
                             </div>
                             <div
                               className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 p-4'
@@ -318,7 +369,7 @@ export const ReservePage = () => {
                               </div>
 
                               {/* //?Ruta */}
-                              <div className='mb-4'>
+                              {/* <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
                                   {t('Ruta')}
                                 </label>
@@ -347,10 +398,10 @@ export const ReservePage = () => {
                                       {errors.reserves[index].route}
                                     </p>
                                   )}
-                              </div>
+                              </div> */}
 
                               {/* //?Time */}
-                              <div className='mb-4'>
+                              {/* <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
                                   {t('Horario')}
                                 </label>
@@ -379,7 +430,7 @@ export const ReservePage = () => {
                                       {errors.reserves[index].time}
                                     </p>
                                   )}
-                              </div>
+                              </div> */}
 
                               {/* //?Nombre */}
                               <div className='mb-4'>

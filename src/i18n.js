@@ -50,6 +50,9 @@ const resources = {
         'Gracias por usar nuestro servicio, nos comunicaremos muy pronto',
       'Tu reserva fue agregada de manera éxitosa':
         'Tu reserva fue agregada de manera éxitosa',
+      'Pasajero ': 'Pasajero ',
+      'Agregar pasajero': 'Agregar pasajero',
+      'Eliminar pasajero': 'Eliminar pasajero',
     },
   },
   en: {
@@ -95,6 +98,9 @@ const resources = {
         'Thanks four using our service',
       'Tu reserva fue agregada de manera éxitosa':
         'Your reservation was added successfully',
+      'Pasajero ': 'Passenger ',
+      'Agregar pasajero': 'Add passenger',
+      'Eliminar pasajero': 'Delete passenger',
     },
   },
 };
