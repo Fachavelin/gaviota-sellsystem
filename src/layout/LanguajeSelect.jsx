@@ -14,10 +14,7 @@ export const LanguajeSelect = () => {
   }, []);
 
   return (
-    <form
-      className='absolute right-0 mt-10 mr-2 rounded-md'
-      onChange={handleSelect}
-    >
+    <form className='mt-1 rounded-md' onChange={handleSelect}>
       <select
         className='py-1 dark:bg-slate-800 dark:text-white border dark:border-slate-700 rounded-md px-1'
         name=''

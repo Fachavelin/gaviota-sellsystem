@@ -10,7 +10,7 @@ export const PagesRouter = () => {
 
   return (
     <Layout>
-      <div className='mt-16 mb-3 mx-auto max-w-7xl text-white'>
+      <div className='mx-auto max-w-screen-2xl text-white'>
         {/* <div className='flex justify-center items-center gap-1'>
           <div
             className={`rounded-2xl px-5 py-4  ${
@@ -35,6 +35,7 @@ export const PagesRouter = () => {
         </div> */}
       </div>
       <Routes>
+        <Route path='/1' element={<IndexPage />} />
         <Route path='/1' element={<ReservePage />} />
         <Route path='/2' element={<PaymentPage />} />
         <Route path='/*' element={<Navigate to='/reservas/1' />} />

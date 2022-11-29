@@ -7,6 +7,9 @@ import { useClientStore } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import './IndexPage.css';
+import { useState } from 'react';
+
 const initialValues = {
   name: '',
   email: '',
@@ -21,128 +24,116 @@ export const IndexPage = () => {
 
   const { t } = useTranslation();
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required(t('El nombre es requerido')),
-    email: Yup.string().required(t('El correo electrónico es requerido')),
-    phoneNumber: Yup.number()
-      .typeError(t('Debe ser un número'))
-      .required(t('El numero de teléfono es requerido')),
-    documentId: Yup.string().required(
-      t('El documento de identificación es requerido')
-    ),
-  });
+  const [isSimple, setIsSimple] = useState(true);
+
+  const [routes, setRoutes] = useState([
+    {
+      name: 'SAN CRISTÓBAL - SANTA CRUZ 7AM',
+      value: 'SC-SX',
+      time: 'Am',
+    },
+    {
+      name: 'SAN CRISTÓBAL - SANTA CRUZ 3PM',
+      value: 'SC-SX',
+      time: 'Pm',
+    },
+    {
+      name: 'SANTA CRUZ - SAN CRISTÓBAL 7AM',
+      value: 'SX-SC',
+      time: 'Am',
+    },
+    {
+      name: 'SANTA CRUZ - SAN CRISTÓBAL 3PM',
+      value: 'SX-SC',
+      time: 'Pm',
+    },
+    {
+      name: 'SANTA CRUZ - ISABELA 7AM',
+      value: 'SX-IB',
+      time: 'Am',
+    },
+    {
+      name: 'ISABELA - SANTA CRUZ 6AM',
+      value: 'IB-SX',
+      time: 'Am',
+    },
+    {
+      name: 'ISABELA - SANTA CRUZ 3PM',
+      value: 'IB-SX',
+      time: 'Pm',
+    },
+    {
+      name: 'SANTA CRUZ - FLOREANA 8AM',
+      value: 'SX-FL',
+      time: 'Am',
+    },
+    {
+      name: 'FLOREANA - SANTA CRUZ 3PM',
+      value: 'FL-SX',
+      time: 'Pm',
+    },
+  ]);
+
+  const [formRoute, setFormRoute] = useState(routes[0].value);
+
+  const handleRouteSelect = (e) => {
+    e.preventDefault();
+
+    console.log(e.target.value);
+
+    setFormRoute(e.target.value);
+  };
+
+  const getRoute = (value = '') => {
+    if (value === '') {
+      return '';
+    }
+    let route = routes.find((data) => data.value === value);
+    return route.name;
+  };
 
   return (
-    <div className=''>
-      <Title text='Datos del comprador' />
-
-      <div className='mx-auto max-w-xl'>
-        <div className='bg-white dark:bg-slate-800  w-full h-full py-2 rounded-md'>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={async (values) => {
-              startCreate(values);
-              navigate('/2');
-            }}
-          >
-            {({ values, errors, touched }) => (
-              <Form>
-                <div className='grid md:grid-cols-2 gap-2 p-4'>
-                  {/* //?Nombre */}
-                  <div className='mb-4'>
-                    <label className='block text-base font-bold '>
-                      {t('nombre')}
-                    </label>
-                    <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
-                      <Field
-                        className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
-                        type='text'
-                        placeholder={t('nombre')}
-                        name={`name`}
-                      />
-                    </div>
-                    {errors && errors.name && touched && touched.name && (
-                      <p className='text-red-500 font-medium '>{errors.name}</p>
-                    )}
-                  </div>
-
-                  {/* //?Email */}
-                  <div className='mb-4'>
-                    <label className='block text-base font-bold '>
-                      {t('email')}
-                    </label>
-                    <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
-                      <Field
-                        className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
-                        type='email'
-                        placeholder={t('email')}
-                        name={`email`}
-                      />
-                    </div>
-                    {errors && errors.email && touched && touched.email && (
-                      <p className='text-red-500 font-medium '>
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* //?phoneNumber */}
-                  <div className='mb-4'>
-                    <label className='block text-base font-bold '>
-                      {t('Número de teléfono')}
-                    </label>
-                    <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
-                      <Field
-                        className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
-                        type='text'
-                        placeholder={t('Número de teléfono')}
-                        name={`phoneNumber`}
-                      />
-                    </div>
-                    {errors &&
-                      errors.phoneNumber &&
-                      touched &&
-                      touched.phoneNumber && (
-                        <p className='text-red-500 font-medium '>
-                          {errors.phoneNumber}
-                        </p>
-                      )}
-                  </div>
-
-                  {/* //?documentId */}
-                  <div className='mb-4'>
-                    <label className='block text-base font-bold '>
-                      {t('documento de Identificación')}
-                    </label>
-                    <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
-                      <Field
-                        className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
-                        type='text'
-                        placeholder={t('documento de Identificación')}
-                        name={`documentId`}
-                      />
-                    </div>
-                    {errors &&
-                      errors.documentId &&
-                      touched &&
-                      touched.documentId && (
-                        <p className='text-red-500 font-medium '>
-                          {errors.documentId}
-                        </p>
-                      )}
-                  </div>
-                  <div></div>
-                  <button
-                    type='submit'
-                    className='bg-blue-500 text-white px-3 py-1 rounded-sm font-semibold cursor-pointer hover:bg-blue-400'
-                  >
-                    {t('Continuar')}
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+    <div className='h-screen w-full background-img'>
+      <div className='flex justify-center items-center h-96'>
+        <div className='grid grid-cols-2 gap-6'>
+          <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 w-96 rounded p-4'>
+            <div className='grid grid-cols-2 gap-4 pb-3'>
+              <button
+                className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
+                  isSimple && 'border-blue-500 text-black dark:text-white'
+                }`}
+                onClick={() => setIsSimple(true)}
+              >
+                <p>Viaje Simple</p>
+              </button>
+              <button
+                className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
+                  !isSimple && 'border-blue-500 text-black dark:text-white'
+                }`}
+                onClick={() => setIsSimple(false)}
+              >
+                <p>Viaje Compuesto</p>
+              </button>
+            </div>
+            <div>
+              <label className='block  text-base font-bold '>{t('Ruta')}</label>
+              <select
+                className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                name={`route`}
+                onChange={handleRouteSelect}
+              >
+                {routes.map((item, key) => (
+                  <option key={key} className='border-none' value={item.value}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              <label className='block  text-base font-bold mt-4'>
+                {t('Fecha')}
+              </label>
+            </div>
+          </div>
+          <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 h-20 w-96 rounded p-4'></div>
         </div>
       </div>
     </div>
