@@ -38,28 +38,49 @@ export const ReservePage = () => {
 
   const [routes, setRoutes] = useState([
     {
-      name: 'San Cristobal - Santa Cruz',
+      name: 'SAN CRISTÓBAL - SANTA CRUZ 7AM',
       value: 'SC-SX',
+      time: 'Am',
     },
     {
-      name: 'Santa Cruz - San Cristobal',
+      name: 'SAN CRISTÓBAL - SANTA CRUZ 3PM',
+      value: 'SC-SX',
+      time: 'Pm',
+    },
+    {
+      name: 'SANTA CRUZ - SAN CRISTÓBAL 7AM',
       value: 'SX-SC',
+      time: 'Am',
     },
     {
-      name: 'Santa Cruz - Isabela',
+      name: 'SANTA CRUZ - SAN CRISTÓBAL 3PM',
+      value: 'SX-SC',
+      time: 'Pm',
+    },
+    {
+      name: 'SANTA CRUZ - ISABELA 7AM',
       value: 'SX-IB',
+      time: 'Am',
     },
     {
-      name: 'Isabela - Santa Cruz',
+      name: 'ISABELA - SANTA CRUZ 6AM',
       value: 'IB-SX',
+      time: 'Am',
     },
     {
-      name: 'Santa Cruz - Floreana',
+      name: 'ISABELA - SANTA CRUZ 3PM',
+      value: 'IB-SX',
+      time: 'Pm',
+    },
+    {
+      name: 'SANTA CRUZ - FLOREANA 8AM',
       value: 'SX-FL',
+      time: 'Am',
     },
     {
-      name: 'Floreana - Santa Cruz',
+      name: 'FLOREANA - SANTA CRUZ 3PM',
       value: 'FL-SX',
+      time: 'Pm',
     },
   ]);
 
