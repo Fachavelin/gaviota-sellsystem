@@ -5,10 +5,16 @@ import { Title } from '../../components/Title';
 import * as Yup from 'yup';
 import { useClientStore } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
+
+import Calendar from 'react-calendar';
 import { useTranslation } from 'react-i18next';
 
 import './IndexPage.css';
 import { useState } from 'react';
+
+import 'react-calendar/dist/Calendar.css';
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const initialValues = {
   name: '',
@@ -74,6 +80,8 @@ export const IndexPage = () => {
     },
   ]);
 
+  const [query1, setQuery1] = useState('');
+
   const [formRoute, setFormRoute] = useState(routes[0].value);
 
   const handleRouteSelect = (e) => {
@@ -91,6 +99,8 @@ export const IndexPage = () => {
     let route = routes.find((data) => data.value === value);
     return route.name;
   };
+
+  const [firstDate, setFirstDate] = useState(new Date());
 
   return (
     <div className='h-screen w-full background-img'>
@@ -117,7 +127,7 @@ export const IndexPage = () => {
             </div>
             <div>
               <label className='block  text-base font-bold '>{t('Ruta')}</label>
-              <select
+              {/* <select
                 className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
                 name={`route`}
                 onChange={handleRouteSelect}
@@ -127,13 +137,26 @@ export const IndexPage = () => {
                     {item.name}
                   </option>
                 ))}
-              </select>
+              </select> */}
+              <input
+                type='text'
+                className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+              />
               <label className='block  text-base font-bold mt-4'>
                 {t('Fecha')}
               </label>
+              <ReactDatePicker
+                selected={firstDate}
+                onChange={(date) => setFirstDate(date)}
+              />
             </div>
           </div>
-          <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 h-20 w-96 rounded p-4'></div>
+          <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4'>
+            {/* <Calendar value={firstDate} /> */}
+            {routes.map((route) => (
+              <p>{getRoute(route.value)}</p>
+            ))}
+          </div>
         </div>
       </div>
     </div>
