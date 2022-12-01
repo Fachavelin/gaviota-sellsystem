@@ -7,7 +7,9 @@ import { useClientStore } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 
 import Calendar from 'react-calendar';
+
 import 'react-calendar/dist/Calendar.css';
+import './Calendar.css';
 
 import { useTranslation } from 'react-i18next';
 
@@ -15,7 +17,8 @@ import './IndexPage.css';
 import { useState } from 'react';
 
 import ReactDatePicker from 'react-datepicker';
-import './Calendar2.css';
+
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 const initialValues = {
   name: '',
@@ -105,9 +108,11 @@ export const IndexPage = () => {
 
   const [viewPos, setViewPos] = useState(0);
 
+  const [numberPassengers, setNumberPassengers] = useState(1);
+
   return (
     <div className='h-screen w-full background-img'>
-      <div className='flex justify-center items-center md:h-96'>
+      <div className='flex justify-center items-center pt-72 md:h-96'>
         <div className='grid md:grid-cols-2 gap-6'>
           <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 w-96 rounded p-4'>
             <div className='grid grid-cols-2 gap-4 pb-3'>
@@ -159,6 +164,29 @@ export const IndexPage = () => {
                 selected={firstDate}
                 onChange={(date) => setFirstDate(date)}
               />
+              <label className='block  text-base font-bold mt-4'>
+                {t('Pasajeros')}
+                <i class='fa-solid fa-user ml-3'></i>
+              </label>
+              <div className='flex justify-center gap-3'>
+                <button
+                  className=''
+                  onClick={() => {
+                    numberPassengers > 1 &&
+                      setNumberPassengers(numberPassengers - 1);
+                  }}
+                >
+                  <i className='fa-solid fa-minus text-xl'></i>
+                </button>
+                {numberPassengers}
+                <button
+                  className=''
+                  onClick={() => setNumberPassengers(numberPassengers + 1)}
+                >
+                  <i className='fa-solid fa-plus text-xl'></i>
+                </button>
+              </div>
+              <button className=''>Continuar</button>
             </div>
           </div>
           <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4'>

@@ -24,6 +24,7 @@
 }
 abbr[title] {
   text-decoration: none;
+  /* background-color: #000000; */
 }
 .react-calendar__month-view__days__day--weekend {
   color: #000000;
