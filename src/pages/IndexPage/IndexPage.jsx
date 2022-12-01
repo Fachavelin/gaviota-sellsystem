@@ -18,7 +18,7 @@ import { useState } from 'react';
 
 import ReactDatePicker from 'react-datepicker';
 
-import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const initialValues = {
   name: '',
@@ -110,6 +110,10 @@ export const IndexPage = () => {
 
   const [numberPassengers, setNumberPassengers] = useState(1);
 
+  const handleContinueBtn = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className='h-screen w-full background-img'>
       <div className='flex justify-center items-center pt-72 md:h-96'>
@@ -133,61 +137,72 @@ export const IndexPage = () => {
                 <p>Viaje Compuesto</p>
               </button>
             </div>
-            <div>
-              <label className='block  text-base font-bold '>{t('Ruta')}</label>
-              {/* <select
-                className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
-                name={`route`}
-                onChange={handleRouteSelect}
-              >
-                {routes.map((item, key) => (
-                  <option key={key} className='border-none' value={item.value}>
-                    {item.name}
-                  </option>
-                ))}
-              </select> */}
-              <input
-                type='text'
-                className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
-                list='routes'
-              />
-              <datalist id='routes'>
-                {routes.map((route) => (
-                  <option value={route.name}></option>
-                ))}
-              </datalist>
-              <label className='block  text-base font-bold mt-4'>
-                {t('Fecha')}
-              </label>
-              <ReactDatePicker
-                className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
-                selected={firstDate}
-                onChange={(date) => setFirstDate(date)}
-              />
-              <label className='block  text-base font-bold mt-4'>
-                {t('Pasajeros')}
-                <i class='fa-solid fa-user ml-3'></i>
-              </label>
-              <div className='flex justify-center gap-3'>
-                <button
-                  className=''
-                  onClick={() => {
-                    numberPassengers > 1 &&
-                      setNumberPassengers(numberPassengers - 1);
-                  }}
-                >
-                  <i className='fa-solid fa-minus text-xl'></i>
-                </button>
-                {numberPassengers}
-                <button
-                  className=''
-                  onClick={() => setNumberPassengers(numberPassengers + 1)}
-                >
-                  <i className='fa-solid fa-plus text-xl'></i>
-                </button>
-              </div>
-              <button className=''>Continuar</button>
-            </div>
+            {isSimple ? (
+              <Formik initialValues={
+                route: ''
+              }>
+                {({ values, errors, touched }) => (
+                  <Form>
+                    <label className='block  text-base font-bold '>
+                      {t('Ruta')}
+                    </label>
+                    <input
+                      type='text'
+                      className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                      list='routes'
+                    />
+                    <datalist id='routes'>
+                      {routes.map((route) => (
+                        <option value={route.name}></option>
+                      ))}
+                    </datalist>
+                    <label className='block  text-base font-bold mt-4'>
+                      {t('Fecha')}
+                    </label>
+                    <ReactDatePicker
+                      className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                      selected={firstDate}
+                      onChange={(date) => setFirstDate(date)}
+                      dateFormat='d/MMMM/yyyy'
+                    />
+                    <label className='block  text-base font-bold mt-4'>
+                      {t('Pasajeros')}
+                      <i class='fa-solid fa-user ml-3'></i>
+                    </label>
+                    <div className='flex justify-center gap-3'>
+                      <button
+                        className=''
+                        onClick={() => {
+                          numberPassengers > 1 &&
+                            setNumberPassengers(numberPassengers - 1);
+                        }}
+                      >
+                        <i className='fa-solid fa-minus text-xl'></i>
+                      </button>
+                      {numberPassengers}
+                      <button
+                        className=''
+                        onClick={() =>
+                          setNumberPassengers(numberPassengers + 1)
+                        }
+                      >
+                        <i className='fa-solid fa-plus text-xl'></i>
+                      </button>
+                    </div>
+                    <div className='flex justify-center pt-3'>
+                      <button
+                        className='bg-azul text-white hover:bg-azulClaro py-1 px-2 rounded-md'
+                        onChange={handleContinueBtn}
+                      >
+                        Continuar
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            ) : (
+              <></>
+            )}
           </div>
           <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4'>
             <label className='block  text-base font-bold mt-4'>
