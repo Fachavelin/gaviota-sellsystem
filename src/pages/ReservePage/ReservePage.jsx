@@ -10,8 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { customSwal } from '../../helpers';
 import { useClientStore } from '../../hooks';
 
-
-export const ReservePage = () => {
+export const ReservePage = ({ initValues = {} }) => {
   const { t, i18n } = useTranslation();
 
   const swal = customSwal();
@@ -23,8 +22,8 @@ export const ReservePage = () => {
         country: Yup.string().required(t('El pais es requerido')),
         passport: Yup.string().required(t('Este parámetro es requerido')),
         // route: Yup.string().required(t('La ruta es requerida')),
-        time: Yup.string().required(t('El el horario es requerido')),
-        date: Yup.date().required(t('La fecha es requerida')),
+        // time: Yup.string().required(t('El el horario es requerido')),
+        // date: Yup.date().required(t('La fecha es requerida')),
         birthday: Yup.date().required(t('El cumpleaños es requerido')),
         phone: Yup.string().required(t('El número de teléfono es requerido')),
       })
@@ -102,32 +101,34 @@ export const ReservePage = () => {
   let birthdayDate = new Date('07/01/1987');
   birthdayDate.setHours(0, 0, 0);
 
-  const initialValues = {
-    reserves: [
-      {
-        country: '',
-        date: todayDate,
-        passenger: '',
-        passport: '',
-        route: '',
-        time: 'Am',
-        phone: '',
-        birthday: '',
-        comment: '',
-        status: 'Residente',
-        paymentDate: todayDate,
-        number: 1,
-      },
-    ],
+  let initialValues = {
+    reserves: [],
   };
 
-  let [type, setType] = useState([
-    {
+  for (let index = 0; index < initValues.numberPassengers; index++) {
+    initialValues.reserves.push({
       country: '',
-      date: todayDate,
+      date: initValues.date || todayDate,
       passenger: '',
       passport: '',
-      route: '',
+      route: initValues.route || '',
+      time: initValues.time || 'Am',
+      phone: '',
+      birthday: '',
+      comment: '',
+      status: 'Residente',
+      paymentDate: todayDate,
+      number: 1,
+    });
+  }
+
+  /*  let [type, setType] = useState([
+    {
+      country: '',
+      date: initValues.date || todayDate,
+      passenger: '',
+      passport: '',
+      route: initValues.route || '',
       time: 'Am',
       phone: '',
       birthday: '',
@@ -137,7 +138,7 @@ export const ReservePage = () => {
       number: 1,
     },
   ]);
-
+ */
   const [countries, setCountries] = useState([]);
   const getCountries = async () => {
     const { data } = await api.get(
@@ -180,7 +181,7 @@ export const ReservePage = () => {
 
   const [times, setTimes] = useState(['Am', 'Pm']);
 
-  const handleFormChange = (e, values, index) => {
+  /* const handleFormChange = (e, values, index) => {
     e.preventDefault();
 
     console.log(values);
@@ -219,7 +220,7 @@ export const ReservePage = () => {
     setType(newArray);
 
     console.log(type);
-  };
+  }; */
 
   const getRoute = (value = '') => {
     if (value === '') {
@@ -231,40 +232,10 @@ export const ReservePage = () => {
 
   return (
     <div className=''>
-      <Title text='Generar Reserva' />
-      <div className='mx-auto max-w-7xl'>
-        <div className='bg-white dark:bg-slate-800  w-full h-full p-4'>
-          <div className='flex gap-6 mx-4 mt-4'>
-            <div>
-              <label className='block  text-base font-bold '>{t('Ruta')}</label>
-              <select
-                className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
-                name={`route`}
-                onChange={handleRouteSelect}
-              >
-                {routes.map((item, key) => (
-                  <option key={key} className='border-none' value={item.value}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className='block  text-base font-bold '>
-                {t('Horario')}
-              </label>
-              <select
-                className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
-                name={`time`}
-              >
-                {times.map((item, key) => (
-                  <option key={key} className='border-none' value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+      {/* <Title text='Generar Reserva' /> */}
+      <div className='mx-auto max-w-7xl pt-20 px-4 md:px-12'>
+        <div className='  w-full h-full p-4'>
+          <p></p>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -312,7 +283,8 @@ export const ReservePage = () => {
                 })
                 .then((result) => {
                   if (result.isConfirmed) {
-                    startCreate(reserves);
+                    console.log(reserves);
+                    // startCreate(reserves);
                     /* startLogout(
                       t(
                         'Gracias por usar nuestro servicio, nos comunicaremos muy pronto'
@@ -326,7 +298,7 @@ export const ReservePage = () => {
               <Form>
                 <FieldArray name='reserves'>
                   {({ insert, remove, push }) => (
-                    <div className='mb-4 mx-4 rounded-lg'>
+                    <div className='mb-4 mx-4 rounded-lg '>
                       <div className='flex justify-between mx-5'>
                         {/* <div>Número de formularios: {count}</div> */}
                         <div className=''></div>
@@ -335,15 +307,15 @@ export const ReservePage = () => {
                         values.reserves.map((reserve, index) => (
                           <div
                             key={index}
-                            className='dark:border-slate-700 border-2 mt-6 rounded-lg'
-                            onChange={(e) => handleFormChange(e, values, index)}
+                            className=' bg-white dark:bg-slate-800 dark:border-slate-700 border-2 mt-6 rounded-lg'
+                            // onChange={(e) => handleFormChange(e, values, index)}
                           >
                             <div className='flex justify-between pt-4 px-4'>
                               <p className='dark:text-white px-2.5 py-1 rounded-lg font-bold  text-xl '>
                                 {t('Pasajero ')}
                                 {index + 1}
                               </p>
-                              <div>
+                              {/* <div>
                                 <button
                                   type='button'
                                   className='bg-indigo-500 text-white px-2.5 py-1 rounded-lg font-semibold cursor-pointer hover:bg-indigo-400'
@@ -358,14 +330,14 @@ export const ReservePage = () => {
                                 >
                                   {t('Eliminar pasajero')}
                                 </button>
-                              </div>
+                              </div> */}
                             </div>
                             <div
                               className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 p-4'
                               key={index}
                             >
                               {/* //?Date */}
-                              <div className='mb-4'>
+                              {/* <div className='mb-4'>
                                 <label className='block text-base font-bold'>
                                   {t('Fecha')}
                                 </label>
@@ -388,7 +360,7 @@ export const ReservePage = () => {
                                       {errors.reserves[index].date}
                                     </p>
                                   )}
-                              </div>
+                              </div> */}
 
                               {/* //?Ruta */}
                               {/* <div className='mb-4'>

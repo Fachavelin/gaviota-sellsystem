@@ -1,4 +1,4 @@
-import { Form, Formik, Field } from 'formik';
+import { Form, Formik, Field, useFormikContext, useField } from 'formik';
 import React from 'react';
 import { Title } from '../../components/Title';
 
@@ -19,13 +19,7 @@ import { useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-
-const initialValues = {
-  name: '',
-  email: '',
-  phoneNumber: '',
-  documentId: '',
-};
+import { ReservePage } from '../ReservePage/ReservePage';
 
 export const IndexPage = () => {
   const { startCreate } = useClientStore();
@@ -101,7 +95,10 @@ export const IndexPage = () => {
       return '';
     }
     let route = routes.find((data) => data.value === value);
-    return route.name;
+    return {
+      time: route.time,
+      name: route.name,
+    };
   };
 
   const [firstDate, setFirstDate] = useState(new Date());
@@ -114,107 +111,152 @@ export const IndexPage = () => {
     e.preventDefault();
   };
 
+  const DatePickerField = ({ ...props }) => {
+    const { setFieldValue } = useFormikContext();
+    const [field] = useField(props);
+
+    return (
+      <ReactDatePicker
+        {...field}
+        {...props}
+        selected={(field.value && new Date(field.value)) || null}
+        onChange={(val) => {
+          setFieldValue(field.value, val);
+        }}
+        // dateFormat='d/MMMM/yyyy'
+      />
+    );
+  };
+
+  const [initialValues, setInitialValues] = useState(null);
+
   return (
     <div className='h-screen w-full background-img'>
-      <div className='flex justify-center items-center pt-72 md:h-96'>
-        <div className='grid md:grid-cols-2 gap-6'>
-          <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 w-96 rounded p-4'>
-            <div className='grid grid-cols-2 gap-4 pb-3'>
-              <button
-                className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
-                  isSimple && 'border-blue-500 text-black dark:text-white'
-                }`}
-                onClick={() => setIsSimple(true)}
-              >
-                <p>Viaje Simple</p>
-              </button>
-              <button
-                className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
-                  !isSimple && 'border-blue-500 text-black dark:text-white'
-                }`}
-                onClick={() => setIsSimple(false)}
-              >
-                <p>Viaje Compuesto</p>
-              </button>
+      {initialValues === null ? (
+        <div className='flex justify-center items-center pt-20 md:pt-64 md:h-96'>
+          <div className='grid md:grid-cols-2 gap-6'>
+            <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 w-96 rounded p-4'>
+              <div className='grid grid-cols-2 gap-4 pb-3'>
+                <button
+                  className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
+                    isSimple && 'border-blue-500 text-black dark:text-white'
+                  }`}
+                  onClick={() => setIsSimple(true)}
+                >
+                  <p>Viaje Simple</p>
+                </button>
+                <button
+                  className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
+                    !isSimple && 'border-blue-500 text-black dark:text-white'
+                  }`}
+                  onClick={() => setIsSimple(false)}
+                >
+                  <p>Viaje Compuesto</p>
+                </button>
+              </div>
+              {isSimple ? (
+                <Formik
+                  initialValues={{
+                    route: routes[0].value,
+                    date: new Date(),
+                    number: 1,
+                  }}
+                  onSubmit={(form) => {
+                    const { name, time } = getRoute(form.route);
+
+                    console.log({
+                      route: form.route,
+                      date: firstDate,
+                      time: time,
+                      numberPassengers,
+                    });
+
+                    setInitialValues({
+                      route: form.route,
+                      date: firstDate,
+                      time: time,
+                      numberPassengers,
+                    });
+                  }}
+                >
+                  {({ values, errors, touched }) => (
+                    <Form>
+                      <label className='block  text-base font-bold '>
+                        {t('Ruta')}
+                      </label>
+                      <Field
+                        as='select'
+                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        name={`route`}
+                      >
+                        {routes.map((route) => (
+                          <option value={route.value}>{route.name}</option>
+                        ))}
+                      </Field>
+
+                      <label className='block  text-base font-bold mt-4'>
+                        {t('Fecha')}
+                      </label>
+                      <ReactDatePicker
+                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        selected={firstDate}
+                        onChange={(date) => setFirstDate(date)}
+                        name='date'
+                        dateFormat='d/MMMM/yyyy'
+                      />
+                      <label className='block  text-base font-bold mt-4'>
+                        {t('Pasajeros')}
+                        <i class='fa-solid fa-user ml-3'></i>
+                      </label>
+                      <div className='flex justify-center gap-3'>
+                        <button
+                          className=''
+                          onClick={() => {
+                            numberPassengers > 1 &&
+                              setNumberPassengers(numberPassengers - 1);
+                          }}
+                          type='button'
+                        >
+                          <i className='fa-solid fa-minus text-xl'></i>
+                        </button>
+                        {numberPassengers}
+                        <button
+                          className=''
+                          onClick={() =>
+                            setNumberPassengers(numberPassengers + 1)
+                          }
+                          type='button'
+                        >
+                          <i className='fa-solid fa-plus text-xl'></i>
+                        </button>
+                      </div>
+                      <div className='flex justify-center pt-3'>
+                        <button
+                          className='bg-azul text-white hover:bg-azulClaro py-1 px-2 rounded-md'
+                          onChange={handleContinueBtn}
+                          type='submit'
+                        >
+                          Continuar
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              ) : (
+                <></>
+              )}
             </div>
-            {isSimple ? (
-              <Formik
-                initialValues={{
-                  route: '',
-                }}
-              >
-                {({ values, errors, touched }) => (
-                  <Form>
-                    <label className='block text-base font-bold'>
-                      {t('Ruta')}
-                    </label>
-                    <Field
-                      placeholder='Seleccionar el proveedor'
-                      type='text'
-                      className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
-                      list='routes'
-                    />
-                    <datalist id='routes'>
-                      {routes.map((route) => (
-                        <option value={route.name}></option>
-                      ))}
-                    </datalist>
-                    <label className='block  text-base font-bold mt-4'>
-                      {t('Fecha')}
-                    </label>
-                    <ReactDatePicker
-                      className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
-                      selected={firstDate}
-                      onChange={(date) => setFirstDate(date)}
-                      dateFormat='d/MMMM/yyyy'
-                    />
-                    <label className='block  text-base font-bold mt-4'>
-                      {t('Pasajeros')}
-                      <i class='fa-solid fa-user ml-3'></i>
-                    </label>
-                    <div className='flex justify-center gap-3'>
-                      <button
-                        className=''
-                        onClick={() => {
-                          numberPassengers > 1 &&
-                            setNumberPassengers(numberPassengers - 1);
-                        }}
-                      >
-                        <i className='fa-solid fa-minus text-xl'></i>
-                      </button>
-                      {numberPassengers}
-                      <button
-                        className=''
-                        onClick={() =>
-                          setNumberPassengers(numberPassengers + 1)
-                        }
-                      >
-                        <i className='fa-solid fa-plus text-xl'></i>
-                      </button>
-                    </div>
-                    <div className='flex justify-center pt-3'>
-                      <button
-                        className='bg-azul text-white hover:bg-azulClaro py-1 px-2 rounded-md'
-                        onChange={handleContinueBtn}
-                      >
-                        Continuar
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            ) : (
-              <></>
-            )}
-          </div>
-          <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4'>
-            <label className='block  text-base font-bold mt-4'>
-              {t('Fecha')}
-            </label>
-            <Calendar onChange={setFirstDate} value={firstDate} />
+            <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block'>
+              <label className='block  text-base font-bold mt-4'>
+                {t('Fecha')}
+              </label>
+              <Calendar onChange={setFirstDate} value={firstDate} />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <ReservePage initValues={initialValues} />
+      )}
     </div>
   );
 };
