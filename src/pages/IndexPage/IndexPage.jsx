@@ -138,15 +138,18 @@ export const IndexPage = () => {
               </button>
             </div>
             {isSimple ? (
-              <Formik initialValues={
-                route: ''
-              }>
+              <Formik
+                initialValues={{
+                  route: '',
+                }}
+              >
                 {({ values, errors, touched }) => (
                   <Form>
-                    <label className='block  text-base font-bold '>
+                    <label className='block text-base font-bold'>
                       {t('Ruta')}
                     </label>
-                    <input
+                    <Field
+                      placeholder='Seleccionar el proveedor'
                       type='text'
                       className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
                       list='routes'
