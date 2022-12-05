@@ -64,6 +64,9 @@ const resources = {
       'Fecha de vuelta': 'Fecha de vuelta',
       'Reservas del': 'Reservas del',
       ' al ': ' al ',
+      'Una ruta': 'Una ruta',
+      'Eliminar ruta': 'Eliminar ruta',
+      'Agregar ruta': 'Agregar ruta',
     },
   },
   en: {
@@ -123,6 +126,9 @@ const resources = {
       'Fecha de vuelta': 'Return date',
       'Reservas del': 'Reserves from',
       ' al ': ' to ',
+      'Una ruta': 'Various routes',
+      'Eliminar ruta': 'Delete route',
+      'Agregar ruta': 'Add route',
     },
   },
 };

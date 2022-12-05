@@ -236,8 +236,8 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
     if (value === '') {
       return '';
     }
-    let route = routes.find((data) => data.value === value);
-    return route.name;
+    let route = routes.find((data) => data.name === value);
+    return route.value;
   };
 
   return (
@@ -253,13 +253,14 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
               let { reserves } = values;
 
               //*Verificar que existen mas de una ruta
-              if (initValues.route.length > 1) {
+              if (initValues.visible >= 1) {
                 console.log('si');
 
-                for (let index = 1; index < initValues.route.length; index++) {
-                  let temp = reserves;
+                let temp = reserves;
+                for (let index = 1; index <= initValues.visible; index++) {
+                  let temp2 = temp;
 
-                  temp = temp.map((item) => {
+                  temp2 = temp2.map((item) => {
                     return {
                       ...item,
                       date: initializeDate(initValues.date[index]),
@@ -267,7 +268,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                       time: initValues.time[index],
                     };
                   });
-                  reserves = reserves.concat(temp);
+                  reserves = reserves.concat(temp2);
                   console.log(reserves);
                 }
               }
@@ -275,15 +276,24 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
 
               let question = '';
 
-              /* reserves = reserves.map((item) => {
-                return { ...item, route: formRoute };
-              }); */
-
-              reserves.forEach((item) => {
+              /* initValues.route.forEach((item) => {
                 question =
                   question +
-                  `${getRoute(item.route)} - ${item.number} : ${item.date}` +
+                  `${item.route} - ${item.numberPassengers} : ${item.date}` +
                   '</br>';
+              }); */
+
+              for (let index = 0; index <= initValues.visible; index++) {
+                question =
+                  question +
+                  `${initValues.route[index]} - ${
+                    initValues.numberPassengers
+                  } : ${initializeDate(initValues.date[index])}` +
+                  '</br>';
+              }
+
+              reserves = reserves.map((item) => {
+                return { ...item, route: getRoute(item.route) };
               });
 
               reserves = reserves.map((item) => {
@@ -313,12 +323,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                 .then((result) => {
                   if (result.isConfirmed) {
                     console.log(reserves);
-                    startCreate(reserves);
-                    /* startLogout(
-                      t(
-                        'Gracias por usar nuestro servicio, nos comunicaremos muy pronto'
-                      )
-                    ); */
+                    // startCreate(reserves);
                   }
                 });
             }}

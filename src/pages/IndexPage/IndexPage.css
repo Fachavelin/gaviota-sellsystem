@@ -1,7 +1,7 @@
 .background-img {
   background-image: url('/images/background-img.jpg');
   background-repeat: repeat-y;
-  background-attachment: fixed;
+  background-attachment: inherit;
   background-size: cover;
-  background-position: bottom;
+  background-position: top;
 }

@@ -33,7 +33,7 @@ export const IndexPage = () => {
     console.log('i18n', i18n.language);
   }, [i18n]);
 
-  const [isSimple, setIsSimple] = useState(true);
+  const [isSimple, setIsSimple] = useState(false);
 
   const [routes, setRoutes] = useState([
     {
@@ -99,15 +99,17 @@ export const IndexPage = () => {
     if (value === '') {
       return '';
     }
-    let route = routes.find((data) => data.value === value);
+    let route = routes.find((data) => data.name === value);
     return {
       time: route.time,
-      name: route.name,
+      value: route.value,
     };
   };
 
   const [firstDate, setFirstDate] = useState(new Date());
   const [secondDate, setSecondDate] = useState(new Date());
+  const [thirdDate, setThirdDate] = useState(new Date());
+  const [fourthDate, setFourthDate] = useState(new Date());
 
   const [viewPos, setViewPos] = useState(0);
 
@@ -136,12 +138,15 @@ export const IndexPage = () => {
 
   const [initialValues, setInitialValues] = useState(null);
 
+  const [visible, setVisible] = useState(1);
+
   return (
     <div className='min-h-screen w-full background-img'>
       {initialValues === null ? (
+        /*   */
         <div
-          className={`flex justify-center items-center pt-20  ${
-            isSimple ? 'md:pt-64' : 'md:pt-96'
+          className={`flex justify-center items-center py-20 ${
+            isSimple ? 'md:py-64' : 'md:py-80'
           }  md:h-96`}
         >
           <div className='grid md:grid-cols-2 gap-6'>
@@ -153,7 +158,7 @@ export const IndexPage = () => {
                   }`}
                   onClick={() => setIsSimple(true)}
                 >
-                  <p>{t('Viaje Simple')}</p>
+                  <p>{t('Una ruta')}</p>
                 </button>
                 <button
                   className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
@@ -161,7 +166,7 @@ export const IndexPage = () => {
                   }`}
                   onClick={() => setIsSimple(false)}
                 >
-                  <p>{t('Viaje Compuesto')}</p>
+                  <p>{t('Varias rutas')}</p>
                 </button>
                 {/* <p
                   className={`text-center text-lg font-bold  dark:text-white hover:text-black hover:cursor-pointer`}
@@ -172,12 +177,12 @@ export const IndexPage = () => {
               {isSimple ? (
                 <Formik
                   initialValues={{
-                    route: routes[0].value,
+                    route: routes[0].name,
                     date: new Date(),
                     number: 1,
                   }}
                   onSubmit={(form) => {
-                    const { name, time } = getRoute(form.route);
+                    const { value, time } = getRoute(form.route);
 
                     console.log({
                       route: form.route,
@@ -191,6 +196,7 @@ export const IndexPage = () => {
                       date: [firstDate],
                       time: [time],
                       numberPassengers,
+                      visible: 0,
                     });
                   }}
                 >
@@ -205,7 +211,7 @@ export const IndexPage = () => {
                         name={`route`}
                       >
                         {routes.map((route, key) => (
-                          <option key={key} value={route.value}>
+                          <option key={key} value={route.name}>
                             {route.name}
                           </option>
                         ))}
@@ -262,38 +268,57 @@ export const IndexPage = () => {
               ) : (
                 <Formik
                   initialValues={{
-                    route: routes[0].value,
-                    route2: routes[3].value,
+                    route: routes[0].name,
+                    route2: routes[1].name,
+                    route3: routes[2].name,
+                    route4: routes[3].name,
                     date: new Date(),
                     date2: new Date(),
+                    date3: new Date(),
+                    date4: new Date(),
                     number: 1,
                   }}
                   onSubmit={(form) => {
-                    const { name, time } = getRoute(form.route);
-                    const { name: name2, time: time2 } = getRoute(form.route2);
+                    const { time } = getRoute(form.route);
+                    const { time: time2 } = getRoute(form.route2);
+                    const { time: time3 } = getRoute(form.route3);
+                    const { time: time4 } = getRoute(form.route4);
 
                     console.log({
                       route: form.route,
                       route2: form.route2,
+                      route3: form.route3,
+                      route4: form.route4,
                       date: firstDate,
                       date2: secondDate,
+                      date3: secondDate,
+                      date4: secondDate,
                       time: time,
                       time2: time2,
+                      time3: time3,
+                      time4: time4,
                       numberPassengers,
+                      visible,
                     });
 
                     setInitialValues({
-                      route: [form.route, form.route2],
-                      date: [firstDate, secondDate],
-                      time: [time, time2],
+                      route: [
+                        form.route,
+                        form.route2,
+                        form.route3,
+                        form.route4,
+                      ],
+                      date: [firstDate, secondDate, thirdDate, fourthDate],
+                      time: [time, time2, time3, time4],
                       numberPassengers,
+                      visible,
                     });
                   }}
                 >
                   {({ values, errors, touched }) => (
                     <Form>
                       <label className='block  text-base font-bold '>
-                        {t('Ruta de ida')}
+                        {t('Ruta')}
                       </label>
                       <Field
                         as='select'
@@ -301,25 +326,74 @@ export const IndexPage = () => {
                         name={`route`}
                       >
                         {routes.map((route, key) => (
-                          <option key={key} value={route.value}>
+                          <option key={key} value={route.name}>
                             {route.name}
                           </option>
                         ))}
                       </Field>
-                      <label className='block text-base font-bold mt-4'>
-                        {t('Ruta de vuelta')}
-                      </label>
                       <Field
                         as='select'
                         className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
                         name={`route2`}
                       >
                         {routes.map((route, key) => (
-                          <option key={key} value={route.value}>
+                          <option key={key} value={route.name}>
                             {route.name}
                           </option>
                         ))}
                       </Field>
+                      {visible >= 2 && (
+                        <Field
+                          as='select'
+                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          name={`route3`}
+                        >
+                          {routes.map((route, key) => (
+                            <option key={key} value={route.name}>
+                              {route.name}
+                            </option>
+                          ))}
+                        </Field>
+                      )}
+                      {visible >= 3 && (
+                        <Field
+                          as='select'
+                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          name={`route4`}
+                        >
+                          {routes.map((route, key) => (
+                            <option key={key} value={route.name}>
+                              {route.name}
+                            </option>
+                          ))}
+                        </Field>
+                      )}
+
+                      <div className='flex justify-end gap-2 mt-2'>
+                        <button
+                          className='text-azul hover:bg-gray-100 py-2 px-2'
+                          type='button'
+                          onClick={() => {
+                            if (visible > 1) {
+                              setVisible(visible - 1);
+                            }
+                          }}
+                        >
+                          {t('Eliminar ruta')}
+                        </button>
+                        <button
+                          className='text-azul hover:bg-gray-100 py-2 px-2'
+                          type='button'
+                          onClick={() => {
+                            if (visible < 3) {
+                              setVisible(visible + 1);
+                            }
+                          }}
+                        >
+                          {t('Agregar ruta')}
+                        </button>
+                      </div>
+
                       <label className='block  text-base font-bold mt-4'>
                         {t('Fecha de ida')}
                       </label>
@@ -330,10 +404,6 @@ export const IndexPage = () => {
                         name='date'
                         dateFormat='d/MM/yyyy'
                       />
-
-                      <label className='block  text-base font-bold mt-4'>
-                        {t('Fecha de vuelta')}
-                      </label>
                       <ReactDatePicker
                         className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
                         selected={secondDate}
@@ -341,6 +411,24 @@ export const IndexPage = () => {
                         name='date'
                         dateFormat='d/MM/yyyy'
                       />
+                      {visible >= 2 && (
+                        <ReactDatePicker
+                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          selected={thirdDate}
+                          onChange={(date) => setThirdDate(date)}
+                          name='date'
+                          dateFormat='d/MM/yyyy'
+                        />
+                      )}
+                      {visible >= 3 && (
+                        <ReactDatePicker
+                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          selected={fourthDate}
+                          onChange={(date) => setFourthDate(date)}
+                          name='date'
+                          dateFormat='d/MM/yyyy'
+                        />
+                      )}
                       <label className='block  text-base font-bold mt-4'>
                         {t('Pasajeros')}
                         <i className='fa-solid fa-user ml-3'></i>
@@ -381,9 +469,9 @@ export const IndexPage = () => {
                 </Formik>
               )}
             </div>
-            <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block'>
+            <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block overflow-y-auto max-h-96'>
               <label className='block  text-base font-bold mt-4'>
-                {isSimple ? t('Fecha') : t('Fecha de ida')}
+                {t('Fecha')} 1
               </label>
               <Calendar
                 locale={i18n.language}
@@ -392,12 +480,32 @@ export const IndexPage = () => {
               />
               <div className={`${isSimple && 'hidden'} mt-6`}>
                 <label className='block  text-base font-bold mt-4'>
-                  {t('Fecha de vuelta')}
+                  {t('Fecha')} 2
                 </label>
                 <Calendar
                   locale={i18n.language}
                   onChange={setSecondDate}
                   value={secondDate}
+                />
+              </div>
+              <div className={`${isSimple && 'hidden'} mt-6`}>
+                <label className='block  text-base font-bold mt-4'>
+                  {t('Fecha')} 3
+                </label>
+                <Calendar
+                  locale={i18n.language}
+                  onChange={setThirdDate}
+                  value={thirdDate}
+                />
+              </div>
+              <div className={`${isSimple && 'hidden'} mt-6`}>
+                <label className='block  text-base font-bold mt-4'>
+                  {t('Fecha')} 4
+                </label>
+                <Calendar
+                  locale={i18n.language}
+                  onChange={setFourthDate}
+                  value={fourthDate}
                 />
               </div>
             </div>
