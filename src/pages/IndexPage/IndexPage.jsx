@@ -20,13 +20,18 @@ import ReactDatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { ReservePage } from '../ReservePage/ReservePage';
+import { useEffect } from 'react';
 
 export const IndexPage = () => {
   const { startCreate } = useClientStore();
 
   const navigate = useNavigate();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    console.log('i18n', i18n.language);
+  }, [i18n]);
 
   const [isSimple, setIsSimple] = useState(true);
 
@@ -42,14 +47,14 @@ export const IndexPage = () => {
       time: 'Pm',
     },
     {
-      name: 'SANTA CRUZ - SAN CRISTÓBAL 7AM',
-      value: 'SX-SC',
-      time: 'Am',
-    },
-    {
       name: 'SANTA CRUZ - SAN CRISTÓBAL 3PM',
       value: 'SX-SC',
       time: 'Pm',
+    },
+    {
+      name: 'SANTA CRUZ - SAN CRISTÓBAL 7AM',
+      value: 'SX-SC',
+      time: 'Am',
     },
     {
       name: 'SANTA CRUZ - ISABELA 7AM',
@@ -81,7 +86,7 @@ export const IndexPage = () => {
   const [query1, setQuery1] = useState('');
 
   const [formRoute, setFormRoute] = useState(routes[0].value);
-
+  // const [formRoute2, setFormRoute2] = useState(routes[4].value);
   const handleRouteSelect = (e) => {
     e.preventDefault();
 
@@ -102,6 +107,7 @@ export const IndexPage = () => {
   };
 
   const [firstDate, setFirstDate] = useState(new Date());
+  const [secondDate, setSecondDate] = useState(new Date());
 
   const [viewPos, setViewPos] = useState(0);
 
@@ -131,9 +137,13 @@ export const IndexPage = () => {
   const [initialValues, setInitialValues] = useState(null);
 
   return (
-    <div className='h-screen w-full background-img'>
+    <div className='min-h-screen w-full background-img'>
       {initialValues === null ? (
-        <div className='flex justify-center items-center pt-20 md:pt-64 md:h-96'>
+        <div
+          className={`flex justify-center items-center pt-20  ${
+            isSimple ? 'md:pt-64' : 'md:pt-96'
+          }  md:h-96`}
+        >
           <div className='grid md:grid-cols-2 gap-6'>
             <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 w-96 rounded p-4'>
               <div className='grid grid-cols-2 gap-4 pb-3'>
@@ -143,7 +153,7 @@ export const IndexPage = () => {
                   }`}
                   onClick={() => setIsSimple(true)}
                 >
-                  <p>Viaje Simple</p>
+                  <p>{t('Viaje Simple')}</p>
                 </button>
                 <button
                   className={`text-center text-lg font-semibold text-gray-700 dark:text-white hover:text-black hover:cursor-pointer border-b-2 ${
@@ -151,8 +161,13 @@ export const IndexPage = () => {
                   }`}
                   onClick={() => setIsSimple(false)}
                 >
-                  <p>Viaje Compuesto</p>
+                  <p>{t('Viaje Compuesto')}</p>
                 </button>
+                {/* <p
+                  className={`text-center text-lg font-bold  dark:text-white hover:text-black hover:cursor-pointer`}
+                >
+                  {t('Datos de viaje')}
+                </p> */}
               </div>
               {isSimple ? (
                 <Formik
@@ -172,9 +187,9 @@ export const IndexPage = () => {
                     });
 
                     setInitialValues({
-                      route: form.route,
-                      date: firstDate,
-                      time: time,
+                      route: [form.route],
+                      date: [firstDate],
+                      time: [time],
                       numberPassengers,
                     });
                   }}
@@ -189,8 +204,10 @@ export const IndexPage = () => {
                         className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
                         name={`route`}
                       >
-                        {routes.map((route) => (
-                          <option value={route.value}>{route.name}</option>
+                        {routes.map((route, key) => (
+                          <option key={key} value={route.value}>
+                            {route.name}
+                          </option>
                         ))}
                       </Field>
 
@@ -202,11 +219,11 @@ export const IndexPage = () => {
                         selected={firstDate}
                         onChange={(date) => setFirstDate(date)}
                         name='date'
-                        dateFormat='d/MMMM/yyyy'
+                        dateFormat='d/MM/yyyy'
                       />
                       <label className='block  text-base font-bold mt-4'>
                         {t('Pasajeros')}
-                        <i class='fa-solid fa-user ml-3'></i>
+                        <i className='fa-solid fa-user ml-3'></i>
                       </label>
                       <div className='flex justify-center gap-3'>
                         <button
@@ -236,26 +253,161 @@ export const IndexPage = () => {
                           onChange={handleContinueBtn}
                           type='submit'
                         >
-                          Continuar
+                          {t('Continuar')}
                         </button>
                       </div>
                     </Form>
                   )}
                 </Formik>
               ) : (
-                <></>
+                <Formik
+                  initialValues={{
+                    route: routes[0].value,
+                    route2: routes[3].value,
+                    date: new Date(),
+                    date2: new Date(),
+                    number: 1,
+                  }}
+                  onSubmit={(form) => {
+                    const { name, time } = getRoute(form.route);
+                    const { name: name2, time: time2 } = getRoute(form.route2);
+
+                    console.log({
+                      route: form.route,
+                      route2: form.route2,
+                      date: firstDate,
+                      date2: secondDate,
+                      time: time,
+                      time2: time2,
+                      numberPassengers,
+                    });
+
+                    setInitialValues({
+                      route: [form.route, form.route2],
+                      date: [firstDate, secondDate],
+                      time: [time, time2],
+                      numberPassengers,
+                    });
+                  }}
+                >
+                  {({ values, errors, touched }) => (
+                    <Form>
+                      <label className='block  text-base font-bold '>
+                        {t('Ruta de ida')}
+                      </label>
+                      <Field
+                        as='select'
+                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        name={`route`}
+                      >
+                        {routes.map((route, key) => (
+                          <option key={key} value={route.value}>
+                            {route.name}
+                          </option>
+                        ))}
+                      </Field>
+                      <label className='block text-base font-bold mt-4'>
+                        {t('Ruta de vuelta')}
+                      </label>
+                      <Field
+                        as='select'
+                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        name={`route2`}
+                      >
+                        {routes.map((route, key) => (
+                          <option key={key} value={route.value}>
+                            {route.name}
+                          </option>
+                        ))}
+                      </Field>
+                      <label className='block  text-base font-bold mt-4'>
+                        {t('Fecha de ida')}
+                      </label>
+                      <ReactDatePicker
+                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        selected={firstDate}
+                        onChange={(date) => setFirstDate(date)}
+                        name='date'
+                        dateFormat='d/MM/yyyy'
+                      />
+
+                      <label className='block  text-base font-bold mt-4'>
+                        {t('Fecha de vuelta')}
+                      </label>
+                      <ReactDatePicker
+                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        selected={secondDate}
+                        onChange={(date) => setSecondDate(date)}
+                        name='date'
+                        dateFormat='d/MM/yyyy'
+                      />
+                      <label className='block  text-base font-bold mt-4'>
+                        {t('Pasajeros')}
+                        <i className='fa-solid fa-user ml-3'></i>
+                      </label>
+                      <div className='flex justify-center gap-3'>
+                        <button
+                          className=''
+                          onClick={() => {
+                            numberPassengers > 1 &&
+                              setNumberPassengers(numberPassengers - 1);
+                          }}
+                          type='button'
+                        >
+                          <i className='fa-solid fa-minus text-xl'></i>
+                        </button>
+                        {numberPassengers}
+                        <button
+                          className=''
+                          onClick={() =>
+                            setNumberPassengers(numberPassengers + 1)
+                          }
+                          type='button'
+                        >
+                          <i className='fa-solid fa-plus text-xl'></i>
+                        </button>
+                      </div>
+                      <div className='flex justify-center pt-3'>
+                        <button
+                          className='bg-azul text-white hover:bg-azulClaro py-1 px-2 rounded-md'
+                          onChange={handleContinueBtn}
+                          type='submit'
+                        >
+                          {t('Continuar')}
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
               )}
             </div>
             <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block'>
               <label className='block  text-base font-bold mt-4'>
-                {t('Fecha')}
+                {isSimple ? t('Fecha') : t('Fecha de ida')}
               </label>
-              <Calendar onChange={setFirstDate} value={firstDate} />
+              <Calendar
+                locale={i18n.language}
+                onChange={setFirstDate}
+                value={firstDate}
+              />
+              <div className={`${isSimple && 'hidden'} mt-6`}>
+                <label className='block  text-base font-bold mt-4'>
+                  {t('Fecha de vuelta')}
+                </label>
+                <Calendar
+                  locale={i18n.language}
+                  onChange={setSecondDate}
+                  value={secondDate}
+                />
+              </div>
             </div>
           </div>
         </div>
       ) : (
-        <ReservePage initValues={initialValues} />
+        <ReservePage
+          initValues={initialValues}
+          setInitValues={setInitialValues}
+        />
       )}
     </div>
   );

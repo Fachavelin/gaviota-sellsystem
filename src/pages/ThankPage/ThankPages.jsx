@@ -6,8 +6,10 @@ export const ThankPages = () => {
 
   return (
     <Layout>
-      <div className='mt-20 text-center text-4xl'>
-        {t('Gracias por usar nuestro servicio')}
+      <div className='h-screen w-full background-img'>
+        <div className='pt-20 text-center text-4xl'>
+          {t('Gracias por usar nuestro servicio')}
+        </div>
       </div>
     </Layout>
   );

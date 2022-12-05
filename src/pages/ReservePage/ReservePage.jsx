@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { customSwal } from '../../helpers';
 import { useClientStore } from '../../hooks';
 
-export const ReservePage = ({ initValues = {} }) => {
+export const ReservePage = ({ initValues = {}, setInitValues }) => {
   const { t, i18n } = useTranslation();
 
   const swal = customSwal();
@@ -105,14 +105,24 @@ export const ReservePage = ({ initValues = {} }) => {
     reserves: [],
   };
 
+  /* let initDate = new Date(initValues.date[0]);
+  initDate.setHours(0, 0, 0);
+  initDate = initDate.toLocaleDateString('en-CA'); */
+
+  const initializeDate = (date = '') => {
+    let initDate = new Date(date);
+    initDate.setHours(0, 0, 0);
+    return initDate.toLocaleDateString('en-CA');
+  };
+
   for (let index = 0; index < initValues.numberPassengers; index++) {
     initialValues.reserves.push({
       country: '',
-      date: initValues.date || todayDate,
+      date: initializeDate(initValues.date[0]) || todayDate,
       passenger: '',
       passport: '',
-      route: initValues.route || '',
-      time: initValues.time || 'Am',
+      route: initValues.route[0] || '',
+      time: initValues.time[0] || 'Am',
       phone: '',
       birthday: '',
       comment: '',
@@ -242,18 +252,37 @@ export const ReservePage = ({ initValues = {} }) => {
             onSubmit={async (values, { resetForm }) => {
               let { reserves } = values;
 
+              //*Verificar que existen mas de una ruta
+              if (initValues.route.length > 1) {
+                console.log('si');
+
+                for (let index = 1; index < initValues.route.length; index++) {
+                  let temp = reserves;
+
+                  temp = temp.map((item) => {
+                    return {
+                      ...item,
+                      date: initializeDate(initValues.date[index]),
+                      route: initValues.route[index],
+                      time: initValues.time[index],
+                    };
+                  });
+                  reserves = reserves.concat(temp);
+                  console.log(reserves);
+                }
+              }
+              //*Fin Verificar
+
               let question = '';
 
-              reserves = reserves.map((item) => {
+              /* reserves = reserves.map((item) => {
                 return { ...item, route: formRoute };
-              });
+              }); */
 
               reserves.forEach((item) => {
                 question =
                   question +
-                  `${getRoute(item.route)} - ${item.time} - ${item.number} : ${
-                    item.date
-                  }` +
+                  `${getRoute(item.route)} - ${item.number} : ${item.date}` +
                   '</br>';
               });
 
@@ -284,7 +313,7 @@ export const ReservePage = ({ initValues = {} }) => {
                 .then((result) => {
                   if (result.isConfirmed) {
                     console.log(reserves);
-                    // startCreate(reserves);
+                    startCreate(reserves);
                     /* startLogout(
                       t(
                         'Gracias por usar nuestro servicio, nos comunicaremos muy pronto'
@@ -299,15 +328,29 @@ export const ReservePage = ({ initValues = {} }) => {
                 <FieldArray name='reserves'>
                   {({ insert, remove, push }) => (
                     <div className='mb-4 mx-4 rounded-lg '>
-                      <div className='flex justify-between mx-5'>
-                        {/* <div>Número de formularios: {count}</div> */}
-                        <div className=''></div>
+                      <div className='flex justify-between'>
+                        <div className=' bg-white dark:bg-slate-800 dark:border-slate-700 border-t-2 border-b-2 border-r-2 border-l-2 rounded-md mb-1'>
+                          <p className='dark:text-white px-2.5 py-1 rounded-lg font-bold  text-xl '>
+                            {t('Reservas del ')}
+                            {initializeDate(initValues.date[0])}
+                            {initValues.date[1] !== undefined && t(' al ')}
+                            {initValues.date[1] !== undefined &&
+                              initializeDate(initValues.date[1])}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setInitValues(null)}
+                          className='mb-1 text-lg bg-red-500 text-white px-3 py-1 rounded-sm font-semibold cursor-pointer hover:bg-red-400'
+                        >
+                          Volver
+                          <i className='ml-2 fa-solid fa-rotate-left'></i>
+                        </button>
                       </div>
                       {values.reserves.length > 0 &&
                         values.reserves.map((reserve, index) => (
                           <div
                             key={index}
-                            className=' bg-white dark:bg-slate-800 dark:border-slate-700 border-2 mt-6 rounded-lg'
+                            className=' bg-white dark:bg-slate-800 dark:border-slate-700 border-2 mb-6 rounded-lg'
                             // onChange={(e) => handleFormChange(e, values, index)}
                           >
                             <div className='flex justify-between pt-4 px-4'>
@@ -627,7 +670,7 @@ export const ReservePage = ({ initValues = {} }) => {
                     </div>
                   )}
                 </FieldArray>
-                <div className='flex justify-end pr-4 mb-1'>
+                <div className='-translate-y-4 flex justify-center md:justify-end pr-4 mb-1 text-lg'>
                   <button
                     className='bg-blue-500 text-white px-3 py-1 rounded-sm font-semibold cursor-pointer hover:bg-blue-400'
                     type='submit'
