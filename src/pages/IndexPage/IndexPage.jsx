@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useClientStore } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 
-import Calendar from 'react-calendar';
+// import Calendar from 'react-calendar';
 
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
@@ -21,6 +21,10 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ReservePage } from '../ReservePage/ReservePage';
 import { useEffect } from 'react';
+
+import DatePicker, { Calendar } from 'react-multi-date-picker';
+import DatePanel from 'react-multi-date-picker/plugins/date_panel';
+import colors from 'react-multi-date-picker/plugins/colors';
 
 export const IndexPage = () => {
   const { startCreate } = useClientStore();
@@ -106,10 +110,10 @@ export const IndexPage = () => {
     };
   };
 
-  const [firstDate, setFirstDate] = useState(new Date());
-  const [secondDate, setSecondDate] = useState(new Date());
-  const [thirdDate, setThirdDate] = useState(new Date());
-  const [fourthDate, setFourthDate] = useState(new Date());
+  const [firstDate, setFirstDate] = useState();
+  const [secondDate, setSecondDate] = useState();
+  const [thirdDate, setThirdDate] = useState();
+  const [fourthDate, setFourthDate] = useState();
 
   const [viewPos, setViewPos] = useState(0);
 
@@ -308,7 +312,12 @@ export const IndexPage = () => {
                         form.route3,
                         form.route4,
                       ],
-                      date: [firstDate, secondDate, thirdDate, fourthDate],
+                      date: [
+                        firstDate || new Date(),
+                        secondDate || new Date(),
+                        thirdDate || new Date(),
+                        fourthDate || new Date(),
+                      ],
                       time: [time, time2, time3, time4],
                       numberPassengers,
                       visible,
@@ -397,36 +406,38 @@ export const IndexPage = () => {
                       <label className='block  text-base font-bold mt-4'>
                         {t('Fecha de ida')}
                       </label>
-                      <ReactDatePicker
-                        className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
-                        selected={firstDate}
+
+                      <DatePicker
+                        inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                        value={firstDate}
                         onChange={(date) => setFirstDate(date)}
-                        name='date'
                         dateFormat='d/MM/yyyy'
+                        placeholder={t('Primera fecha')}
                       />
-                      <ReactDatePicker
-                        className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
-                        selected={secondDate}
+                      <DatePicker
+                        inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                        value={secondDate}
                         onChange={(date) => setSecondDate(date)}
-                        name='date'
                         dateFormat='d/MM/yyyy'
+                        placeholder={t('Segunda fecha')}
                       />
+
                       {visible >= 2 && (
-                        <ReactDatePicker
-                          className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
-                          selected={thirdDate}
+                        <DatePicker
+                          inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                          value={thirdDate}
                           onChange={(date) => setThirdDate(date)}
-                          name='date'
                           dateFormat='d/MM/yyyy'
+                          placeholder={t('Tercera fecha')}
                         />
                       )}
                       {visible >= 3 && (
-                        <ReactDatePicker
-                          className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
-                          selected={fourthDate}
+                        <DatePicker
+                          inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                          value={fourthDate}
                           onChange={(date) => setFourthDate(date)}
-                          name='date'
                           dateFormat='d/MM/yyyy'
+                          placeholder={t('Cuarta fecha')}
                         />
                       )}
                       <label className='block  text-base font-bold mt-4'>
@@ -469,45 +480,60 @@ export const IndexPage = () => {
                 </Formik>
               )}
             </div>
-            <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block overflow-y-auto max-h-96'>
+            <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block'>
               <label className='block  text-base font-bold mt-4'>
-                {t('Fecha')} 1
+                {t('Fecha')}
               </label>
-              <Calendar
-                locale={i18n.language}
-                onChange={setFirstDate}
-                value={firstDate}
-              />
-              <div className={`${isSimple && 'hidden'} mt-6`}>
+              <div
+                className={`flex justify-center items-center ${
+                  isSimple ? 'pt-2' : 'pt-10'
+                }`}
+              >
+                <Calendar
+                  multiple
+                  locale={i18n.language}
+                  // onChange={setFirstDate}
+                  readOnly
+                  value={[firstDate, secondDate, thirdDate, fourthDate]}
+                  plugins={[<DatePanel />]}
+                />
+              </div>
+              {/* <div className={`${isSimple && 'hidden'} mt-6`}>
                 <label className='block  text-base font-bold mt-4'>
                   {t('Fecha')} 2
                 </label>
-                <Calendar
-                  locale={i18n.language}
-                  onChange={setSecondDate}
-                  value={secondDate}
-                />
+                <div className='flex justify-center mt-2'>
+                  <Calendar
+                    locale={i18n.language}
+                    onChange={setSecondDate}
+                    value={secondDate}
+                  />
+                </div>
               </div>
               <div className={`${isSimple && 'hidden'} mt-6`}>
                 <label className='block  text-base font-bold mt-4'>
                   {t('Fecha')} 3
                 </label>
-                <Calendar
-                  locale={i18n.language}
-                  onChange={setThirdDate}
-                  value={thirdDate}
-                />
+                <div className='flex justify-center mt-2'>
+                  <Calendar
+                    locale={i18n.language}
+                    onChange={setThirdDate}
+                    value={thirdDate}
+                  />
+                </div>
               </div>
               <div className={`${isSimple && 'hidden'} mt-6`}>
                 <label className='block  text-base font-bold mt-4'>
                   {t('Fecha')} 4
                 </label>
-                <Calendar
-                  locale={i18n.language}
-                  onChange={setFourthDate}
-                  value={fourthDate}
-                />
-              </div>
+                <div className='flex justify-center mt-2'>
+                  <Calendar
+                    locale={i18n.language}
+                    onChange={setFourthDate}
+                    value={fourthDate}
+                  />
+                </div>
+              </div> */}
             </div>
           </div>
         </div>
