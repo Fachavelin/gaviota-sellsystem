@@ -322,7 +322,7 @@ export const IndexPage = () => {
                       </label>
                       <Field
                         as='select'
-                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                         name={`route`}
                       >
                         {routes.map((route, key) => (
@@ -333,7 +333,7 @@ export const IndexPage = () => {
                       </Field>
                       <Field
                         as='select'
-                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                         name={`route2`}
                       >
                         {routes.map((route, key) => (
@@ -345,7 +345,7 @@ export const IndexPage = () => {
                       {visible >= 2 && (
                         <Field
                           as='select'
-                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                           name={`route3`}
                         >
                           {routes.map((route, key) => (
@@ -358,7 +358,7 @@ export const IndexPage = () => {
                       {visible >= 3 && (
                         <Field
                           as='select'
-                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                           name={`route4`}
                         >
                           {routes.map((route, key) => (
@@ -398,14 +398,14 @@ export const IndexPage = () => {
                         {t('Fecha de ida')}
                       </label>
                       <ReactDatePicker
-                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                         selected={firstDate}
                         onChange={(date) => setFirstDate(date)}
                         name='date'
                         dateFormat='d/MM/yyyy'
                       />
                       <ReactDatePicker
-                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                         selected={secondDate}
                         onChange={(date) => setSecondDate(date)}
                         name='date'
@@ -413,7 +413,7 @@ export const IndexPage = () => {
                       />
                       {visible >= 2 && (
                         <ReactDatePicker
-                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                           selected={thirdDate}
                           onChange={(date) => setThirdDate(date)}
                           name='date'
@@ -422,7 +422,7 @@ export const IndexPage = () => {
                       )}
                       {visible >= 3 && (
                         <ReactDatePicker
-                          className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                          className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                           selected={fourthDate}
                           onChange={(date) => setFourthDate(date)}
                           name='date'
