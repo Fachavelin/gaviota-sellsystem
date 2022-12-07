@@ -67,6 +67,7 @@ const resources = {
       'Una ruta': 'Una ruta',
       'Eliminar ruta': 'Eliminar ruta',
       'Agregar ruta': 'Agregar ruta',
+      Calendario: 'Calendario',
     },
   },
   en: {
@@ -129,6 +130,7 @@ const resources = {
       'Una ruta': 'Various routes',
       'Eliminar ruta': 'Delete route',
       'Agregar ruta': 'Add route',
+      Calendario: 'Calendar',
     },
   },
 };

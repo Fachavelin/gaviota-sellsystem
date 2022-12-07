@@ -337,10 +337,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                         <div className=' bg-white dark:bg-slate-800 dark:border-slate-700 border-t-2 border-b-2 border-r-2 border-l-2 rounded-md mb-1'>
                           <p className='dark:text-white px-2.5 py-1 rounded-lg font-bold  text-xl '>
                             {t('Reservas del ')}
-                            {initializeDate(initValues.date[0])}
-                            {initValues.date[1] !== undefined && t(' al ')}
-                            {initValues.date[1] !== undefined &&
-                              initializeDate(initValues.date[1])}
+                            {initializeDate(initValues.date[0] || new Date())}
                           </p>
                         </div>
                         <button

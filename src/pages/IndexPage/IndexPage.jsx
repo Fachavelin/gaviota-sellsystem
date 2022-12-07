@@ -211,7 +211,7 @@ export const IndexPage = () => {
                       </label>
                       <Field
                         as='select'
-                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
+                        className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
                         name={`route`}
                       >
                         {routes.map((route, key) => (
@@ -224,12 +224,13 @@ export const IndexPage = () => {
                       <label className='block  text-base font-bold mt-4'>
                         {t('Fecha')}
                       </label>
-                      <ReactDatePicker
-                        className='flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border bg-white dark:border-slate-700 dark:bg-slate-800'
-                        selected={firstDate}
+
+                      <DatePicker
+                        inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                        value={firstDate}
                         onChange={(date) => setFirstDate(date)}
-                        name='date'
                         dateFormat='d/MM/yyyy'
+                        placeholder={t('Fecha de salida')}
                       />
                       <label className='block  text-base font-bold mt-4'>
                         {t('Pasajeros')}
@@ -385,6 +386,12 @@ export const IndexPage = () => {
                           onClick={() => {
                             if (visible > 1) {
                               setVisible(visible - 1);
+                              if (visible === 3) {
+                                setFourthDate();
+                              }
+                              if (visible === 2) {
+                                setThirdDate();
+                              }
                             }
                           }}
                         >
@@ -481,8 +488,8 @@ export const IndexPage = () => {
               )}
             </div>
             <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block'>
-              <label className='block  text-base font-bold mt-4'>
-                {t('Fecha')}
+              <label className='block  text-base font-bold mt-4 text-center'>
+                {t('Calendario')}
               </label>
               <div
                 className={`flex justify-center items-center ${
@@ -495,7 +502,7 @@ export const IndexPage = () => {
                   // onChange={setFirstDate}
                   readOnly
                   value={[firstDate, secondDate, thirdDate, fourthDate]}
-                  plugins={[<DatePanel />]}
+                  /* plugins={[<DatePanel />]} */
                 />
               </div>
               {/* <div className={`${isSimple && 'hidden'} mt-6`}>
