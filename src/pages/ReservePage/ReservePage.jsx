@@ -149,6 +149,11 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
     },
   ]);
  */
+
+  useEffect(() => {
+    getCountries();
+  }, []);
+
   const [countries, setCountries] = useState([]);
   const getCountries = async () => {
     const { data } = await api.get(
@@ -240,6 +245,20 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
     return route.value;
   };
 
+  const getDates = () => {
+    let text = '';
+
+    for (let index = 0; index <= initValues.visible; index++) {
+      text += initializeDate(initValues.date[index] || new Date());
+
+      if (index < initValues.visible) {
+        text += ' - ';
+      }
+    }
+
+    return text;
+  };
+
   return (
     <div className=''>
       {/* <Title text='Generar Reserva' /> */}
@@ -322,8 +341,8 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                 })
                 .then((result) => {
                   if (result.isConfirmed) {
-                    console.log(reserves);
-                    // startCreate(reserves);
+                    // console.log(reserves);
+                    startCreate(reserves);
                   }
                 });
             }}
@@ -337,7 +356,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                         <div className=' bg-white dark:bg-slate-800 dark:border-slate-700 border-t-2 border-b-2 border-r-2 border-l-2 rounded-md mb-1'>
                           <p className='dark:text-white px-2.5 py-1 rounded-lg font-bold  text-xl '>
                             {t('Reservas del ')}
-                            {initializeDate(initValues.date[0] || new Date())}
+                            {getDates()}
                           </p>
                         </div>
                         <button
@@ -496,31 +515,6 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   )}
                               </div>
 
-                              {/* //?Telefono */}
-                              <div className='mb-4'>
-                                <label className='block text-base font-bold '>
-                                  {t('Número de teléfono')}
-                                </label>
-                                <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
-                                  <Field
-                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
-                                    type='text'
-                                    placeholder={t('Número de teléfono')}
-                                    name={`reserves.${index}.phone`}
-                                  />
-                                </div>
-                                {errors.reserves &&
-                                  errors.reserves[index] &&
-                                  errors.reserves[index].phone &&
-                                  touched.reserves &&
-                                  touched.reserves[index] &&
-                                  touched.reserves[index].phone && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].phone}
-                                    </p>
-                                  )}
-                              </div>
-
                               {/* //?Pais */}
                               <div className='mb-4'>
                                 <label className='block  text-base font-bold '>
@@ -557,6 +551,31 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   )}
                               </div>
 
+                              {/* //?Cedula */}
+                              <div className='mb-4'>
+                                <label className='block text-base font-bold '>
+                                  {t('Cédula/Pasaporte')}
+                                </label>
+                                <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
+                                  <Field
+                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    type='text'
+                                    placeholder={t('Cédula/Pasaporte')}
+                                    name={`reserves.${index}.passport`}
+                                  />
+                                </div>
+                                {errors.reserves &&
+                                  errors.reserves[index] &&
+                                  errors.reserves[index].passport &&
+                                  touched.reserves &&
+                                  touched.reserves[index] &&
+                                  touched.reserves[index].passport && (
+                                    <p className='text-red-500 font-medium '>
+                                      {errors.reserves[index].passport}
+                                    </p>
+                                  )}
+                              </div>
+
                               {/* //?Edad*/}
                               <div className='mb-4'>
                                 <label className='block text-base font-bold'>
@@ -582,27 +601,27 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   )}
                               </div>
 
-                              {/* //?Cedula */}
+                              {/* //?Telefono */}
                               <div className='mb-4'>
                                 <label className='block text-base font-bold '>
-                                  {t('Cédula/Pasaporte')}
+                                  {t('Número de teléfono')}
                                 </label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
                                     className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='text'
-                                    placeholder={t('Cédula/Pasaporte')}
-                                    name={`reserves.${index}.passport`}
+                                    placeholder={t('Número de teléfono')}
+                                    name={`reserves.${index}.phone`}
                                   />
                                 </div>
                                 {errors.reserves &&
                                   errors.reserves[index] &&
-                                  errors.reserves[index].passport &&
+                                  errors.reserves[index].phone &&
                                   touched.reserves &&
                                   touched.reserves[index] &&
-                                  touched.reserves[index].passport && (
+                                  touched.reserves[index].phone && (
                                     <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].passport}
+                                      {errors.reserves[index].phone}
                                     </p>
                                   )}
                               </div>
