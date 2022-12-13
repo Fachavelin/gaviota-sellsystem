@@ -41,7 +41,7 @@ export const useClientStore = () => {
     // const client = localStorage.getItem('client');
 
     if (!expireAt) {
-      await startLogout();
+      startLogout();
       return;
     } else {
       try {
@@ -50,7 +50,7 @@ export const useClientStore = () => {
           startLogout();
           return;
         }
-        dispatch(onLogin());
+        dispatch(onLogin({}));
       } catch (error) {
         console.log(error);
       }

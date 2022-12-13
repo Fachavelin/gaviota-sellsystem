@@ -5,14 +5,17 @@ import { useClientStore } from '../hooks';
 export const HandleParams = () => {
   const { expireAt } = useParams();
 
-  const { startCreate } = useClientStore();
+  const { status: authStatus, startCreate } = useClientStore();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     startCreate(expireAt);
-    navigate('/reservas/1');
   }, []);
+
+  if (authStatus !== 'checking') {
+    navigate('/reservas/1');
+  }
 
   return (
     <div className='h-screen bg-azul flex justify-center items-center '>
