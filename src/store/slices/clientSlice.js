@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const clientSlice = createSlice({
   name: 'client',
   initialState: {
-    status: 'checking', // '
+    status: 'authenticated', // '
     client: {},
     errorMessage: undefined,
   },

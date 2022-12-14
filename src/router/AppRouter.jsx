@@ -16,8 +16,9 @@ export const AppRouter = () => {
     clearMessage,
   } = useClientStore();
 
+  //!cambiar estado para version sin tocken
   useEffect(() => {
-    checkToken();
+    /* checkToken(); */
   }, []);
 
   const swal = customSwal();

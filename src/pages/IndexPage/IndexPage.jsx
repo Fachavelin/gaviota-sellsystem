@@ -37,7 +37,7 @@ export const IndexPage = () => {
     console.log('i18n', i18n.language);
   }, [i18n]);
 
-  const [isSimple, setIsSimple] = useState(false);
+  const [isSimple, setIsSimple] = useState(true);
 
   const [routes, setRoutes] = useState([
     {
@@ -142,6 +142,7 @@ export const IndexPage = () => {
 
   const [initialValues, setInitialValues] = useState(null);
 
+  //?Determina desde que posición del fechas de ida se puede ver, dejar en 1 por defecto no cambiar!
   const [visible, setVisible] = useState(1);
 
   return (
