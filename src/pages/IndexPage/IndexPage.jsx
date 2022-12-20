@@ -26,6 +26,11 @@ import DatePicker, { Calendar } from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import colors from 'react-multi-date-picker/plugins/colors';
 
+// import gregorian from 'react-date-object/calendars/gregorian';
+
+import gregorian_es from './gregorian_es';
+import gregorian_en from 'react-date-object/locales/gregorian_en';
+
 export const IndexPage = () => {
   const { startCreate } = useClientStore();
 
@@ -33,9 +38,17 @@ export const IndexPage = () => {
 
   const { t, i18n } = useTranslation();
 
+  const [locale, setLocale] = useState(gregorian_es);
+
   useEffect(() => {
-    console.log('i18n', i18n.language);
-  }, [i18n]);
+    // console.log('i18n', i18n.language);
+    if (i18n.language == 'es-ES') {
+      setLocale(gregorian_es);
+    }
+    if (i18n.language == 'en-US') {
+      setLocale(gregorian_en);
+    }
+  }, [i18n.language]);
 
   const [isSimple, setIsSimple] = useState(true);
 
@@ -417,6 +430,7 @@ export const IndexPage = () => {
 
                       <DatePicker
                         inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                        locale={locale}
                         value={firstDate}
                         onChange={(date) => setFirstDate(date)}
                         dateFormat='d/MM/yyyy'
@@ -424,6 +438,7 @@ export const IndexPage = () => {
                       />
                       <DatePicker
                         inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                        locale={locale}
                         value={secondDate}
                         onChange={(date) => setSecondDate(date)}
                         dateFormat='d/MM/yyyy'
@@ -433,6 +448,7 @@ export const IndexPage = () => {
                       {visible >= 2 && (
                         <DatePicker
                           inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                          locale={locale}
                           value={thirdDate}
                           onChange={(date) => setThirdDate(date)}
                           dateFormat='d/MM/yyyy'
@@ -442,6 +458,7 @@ export const IndexPage = () => {
                       {visible >= 3 && (
                         <DatePicker
                           inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
+                          locale={locale}
                           value={fourthDate}
                           onChange={(date) => setFourthDate(date)}
                           dateFormat='d/MM/yyyy'
@@ -499,7 +516,8 @@ export const IndexPage = () => {
               >
                 <Calendar
                   multiple
-                  locale={i18n.language}
+                  locale={locale}
+                  // calendar={gregorian}
                   // onChange={setFirstDate}
                   readOnly
                   value={[firstDate, secondDate, thirdDate, fourthDate]}
