@@ -66,6 +66,11 @@ export const IndexPage = () => {
       time: 'Am',
     },
     {
+      name: 'SANTA CRUZ - ISABELA 3PM',
+      value: 'SX-IB',
+      time: 'Pm',
+    },
+    {
       name: 'ISABELA - SANTA CRUZ 6AM',
       value: 'IB-SX',
       time: 'Am',
