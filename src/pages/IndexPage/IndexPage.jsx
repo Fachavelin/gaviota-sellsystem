@@ -250,6 +250,7 @@ export const IndexPage = () => {
                         onChange={(date) => setFirstDate(date)}
                         dateFormat='d/MM/yyyy'
                         placeholder={t('Fecha de salida')}
+                        locale={locale}
                       />
                       <label className='block  text-base font-bold mt-4'>
                         {t('Pasajeros')}
