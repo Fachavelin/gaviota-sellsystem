@@ -307,7 +307,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                   question +
                   `${initValues.route[index]} - ${
                     initValues.numberPassengers
-                  } : ${initializeDate(initValues.date[index])}` +
+                  }pax : ${initializeDate(initValues.date[index])}` +
                   '</br>';
               }
 
