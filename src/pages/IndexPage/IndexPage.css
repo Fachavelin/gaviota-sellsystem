@@ -3,5 +3,6 @@
   background-repeat: repeat-y;
   background-attachment: inherit;
   background-size: cover;
+  background-position-x: center;
   /* background-position: bottom; */
 }
