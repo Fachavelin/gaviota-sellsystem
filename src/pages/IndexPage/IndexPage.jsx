@@ -216,7 +216,7 @@ export const IndexPage = () => {
 
                     setInitialValues({
                       route: [form.route],
-                      date: [firstDate],
+                      date: [firstDate || new Date()],
                       time: [time],
                       numberPassengers,
                       visible: 0,
@@ -294,9 +294,9 @@ export const IndexPage = () => {
                 <Formik
                   initialValues={{
                     route: routes[0].name,
-                    route2: routes[1].name,
-                    route3: routes[2].name,
-                    route4: routes[3].name,
+                    route2: routes[0].name,
+                    route3: routes[0].name,
+                    route4: routes[0].name,
                     date: new Date(),
                     date2: new Date(),
                     date3: new Date(),

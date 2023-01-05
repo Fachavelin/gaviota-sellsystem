@@ -35,7 +35,11 @@ export const useReserveStore = () => {
         return;
       }
       dispatch(onFinished(data));
-      startLogout(t('Tu reserva fue agregada de manera éxitosa'));
+      console.log(data);
+      startLogout(
+        t(`Tu reserva fue agregada de manera éxitosa`) +
+          `: N°${data.succes.substring(0, 6).toUpperCase()}`
+      );
     } catch (error) {
       console.log(error);
     }

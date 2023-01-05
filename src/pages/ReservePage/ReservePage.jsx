@@ -73,6 +73,11 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
       time: 'Pm',
     },
     {
+      name: 'SANTA CRUZ - ISABELA 3PM',
+      value: 'SX-IB',
+      time: 'Pm',
+    },
+    {
       name: 'SANTA CRUZ - FLOREANA 8AM',
       value: 'SX-FL',
       time: 'Am',
@@ -132,24 +137,6 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
     });
   }
 
-  /*  let [type, setType] = useState([
-    {
-      country: '',
-      date: initValues.date || todayDate,
-      passenger: '',
-      passport: '',
-      route: initValues.route || '',
-      time: 'Am',
-      phone: '',
-      birthday: '',
-      comment: '',
-      status: 'Residente',
-      paymentDate: todayDate,
-      number: 1,
-    },
-  ]);
- */
-
   useEffect(() => {
     getCountries();
   }, []);
@@ -196,53 +183,13 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
 
   const [times, setTimes] = useState(['Am', 'Pm']);
 
-  /* const handleFormChange = (e, values, index) => {
-    e.preventDefault();
-
-    console.log(values);
-
-    let { reserves } = values;
-
-    console.log('reserves', reserves);
-
-    let name = e.target.name;
-    let value = e.target.value;
-
-    let finalName = name.split('.');
-    console.log('f', finalName);
-    console.log('f value', value);
-
-    if (!isNaN(value)) {
-      if (
-        finalName[2] !== 'passport' &&
-        finalName[2] !== 'phone' &&
-        finalName[2] !== 'notes' &&
-        finalName[2] !== 'comment'
-      ) {
-        value = parseInt(value);
-      }
-    }
-
-    const newArray = reserves.map((item, i) => {
-      if (index === i) {
-        return { ...item, [finalName[2]]: value };
-      } else {
-        return item;
-      }
-    });
-
-    console.log('new', newArray);
-    setType(newArray);
-
-    console.log(type);
-  }; */
-
   const getRoute = (value = '') => {
     if (value === '') {
       return '';
     }
     let route = routes.find((data) => data.name === value);
-    return route.value;
+
+    return route === undefined ? routes[0].value : route.value;
   };
 
   const getDates = () => {
@@ -301,6 +248,9 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                   `${item.route} - ${item.numberPassengers} : ${item.date}` +
                   '</br>';
               }); */
+              reserves = reserves.map((item) => {
+                return { ...item, route: getRoute(item.route) };
+              });
 
               for (let index = 0; index <= initValues.visible; index++) {
                 question =
@@ -310,10 +260,6 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                   }pax : ${initializeDate(initValues.date[index])}` +
                   '</br>';
               }
-
-              reserves = reserves.map((item) => {
-                return { ...item, route: getRoute(item.route) };
-              });
 
               reserves = reserves.map((item) => {
                 return { ...item, date: new Date(item.date) };
@@ -341,7 +287,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                 })
                 .then((result) => {
                   if (result.isConfirmed) {
-                    // console.log(reserves);
+                    console.log(reserves);
                     startCreate(reserves);
                   }
                 });
