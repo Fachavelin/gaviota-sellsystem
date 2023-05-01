@@ -9,7 +9,7 @@ const resources = {
     translation: {
       'Datos del comprador': 'Datos del comprador',
       'Generar Reserva': 'Generar Reserva',
-      nombre: 'Nombre',
+      nombre: 'Nombres y Apellidos',
       email: 'Correo Electrónico',
       'Número de teléfono': 'Número de teléfonos',
       'documento de Identificación': 'Documento de Identificación',
@@ -79,7 +79,7 @@ const resources = {
     translation: {
       'Datos del comprador': 'Buyer Data',
       'Generar Reserva': 'Make a reserve',
-      nombre: 'Name',
+      nombre: 'Name and Surname',
       email: 'Email',
       'Número de teléfono': 'Telephone Number',
       'documento de Identificación': 'Identification Document',

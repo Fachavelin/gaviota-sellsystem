@@ -21,6 +21,8 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
         passenger: Yup.string().required(t('El nombre es requerido')),
         country: Yup.string().required(t('El pais es requerido')),
         passport: Yup.string().required(t('Este parámetro es requerido')),
+        price: Yup.number().required('El precio es requerido'),
+
         // route: Yup.string().required(t('La ruta es requerida')),
         // time: Yup.string().required(t('El el horario es requerido')),
         // date: Yup.date().required(t('La fecha es requerida')),
@@ -101,7 +103,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
 
   let todayDate = new Date();
   todayDate.setHours(0, 0, 0);
-  todayDate = todayDate.toLocaleDateString('en-CA');
+  todayDate = todayDate.toLocaleDateString('fr-CA');
 
   let birthdayDate = new Date('07/01/1987');
   birthdayDate.setHours(0, 0, 0);
@@ -117,7 +119,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
   const initializeDate = (date = '') => {
     let initDate = new Date(date);
     initDate.setHours(0, 0, 0);
-    return initDate.toLocaleDateString('en-CA');
+    return initDate.toLocaleDateString('fr-CA');
   };
 
   for (let index = 0; index < initValues.numberPassengers; index++) {
@@ -143,14 +145,12 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
 
   const [countries, setCountries] = useState([]);
   const getCountries = async () => {
-    const { data } = await api.get(
-      'https://restcountries.com/v3.1/all?fields=translations'
-    );
+    const { data } = await api.get('https://restcountries.com/v3.1/all?fields=translations');
     setCountries(data);
   };
 
   //*Inicializar parámetros
-  const [price, setPrice] = useState([20, 25, 30, 35, 40]);
+  const [price, setPrice] = useState([20, 25, 30]);
   const [ship, setShip] = useState([
     'Gaviota',
     'Tropical Bird',
@@ -255,9 +255,9 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
               for (let index = 0; index <= initValues.visible; index++) {
                 question =
                   question +
-                  `${initValues.route[index]} - ${
-                    initValues.numberPassengers
-                  }pax : ${initializeDate(initValues.date[index])}` +
+                  `${initValues.route[index]} - ${initValues.numberPassengers}pax : ${initializeDate(
+                    initValues.date[index]
+                  )}` +
                   '</br>';
               }
 
@@ -273,6 +273,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                 return {
                   ...item,
                   paymentDate: new Date(todayDate),
+                  price: parseInt(item.price),
                 };
               });
 
@@ -342,108 +343,13 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                 </button>
                               </div> */}
                             </div>
-                            <div
-                              className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 p-4'
-                              key={index}
-                            >
-                              {/* //?Date */}
-                              {/* <div className='mb-4'>
-                                <label className='block text-base font-bold'>
-                                  {t('Fecha')}
-                                </label>
-                                <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
-                                  <Field
-                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
-                                    type='date'
-                                    placeholder='Fecha'
-                                    name={`reserves.${index}.date`}
-                                    lang={i18n.language}
-                                  />
-                                </div>
-                                {errors.reserves &&
-                                  errors.reserves[index] &&
-                                  errors.reserves[index].date &&
-                                  touched.reserves &&
-                                  touched.reserves[index] &&
-                                  touched.reserves[index].date && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].date}
-                                    </p>
-                                  )}
-                              </div> */}
-
-                              {/* //?Ruta */}
-                              {/* <div className='mb-4'>
-                                <label className='block  text-base font-bold '>
-                                  {t('Ruta')}
-                                </label>
-                                <Field
-                                  className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
-                                  name={`reserves.${index}.route`}
-                                  as='select'
-                                >
-                                  {routes.map((item, key) => (
-                                    <option
-                                      key={key}
-                                      className='border-none'
-                                      value={item.value}
-                                    >
-                                      {item.name}
-                                    </option>
-                                  ))}
-                                </Field>
-                                {errors.reserves &&
-                                  errors.reserves[index] &&
-                                  errors.reserves[index].route &&
-                                  touched.reserves &&
-                                  touched.reserves[index] &&
-                                  touched.reserves[index].route && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].route}
-                                    </p>
-                                  )}
-                              </div> */}
-
-                              {/* //?Time */}
-                              {/* <div className='mb-4'>
-                                <label className='block  text-base font-bold '>
-                                  {t('Horario')}
-                                </label>
-                                <Field
-                                  className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
-                                  name={`reserves.${index}.time`}
-                                  as='select'
-                                >
-                                  {times.map((item, key) => (
-                                    <option
-                                      key={key}
-                                      className='border-none'
-                                      value={item}
-                                    >
-                                      {item}
-                                    </option>
-                                  ))}
-                                </Field>
-                                {errors.reserves &&
-                                  errors.reserves[index] &&
-                                  errors.reserves[index].time &&
-                                  touched.reserves &&
-                                  touched.reserves[index] &&
-                                  touched.reserves[index].time && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].time}
-                                    </p>
-                                  )}
-                              </div> */}
-
+                            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 p-4' key={index}>
                               {/* //?Nombre */}
                               <div className='mb-4'>
-                                <label className='block text-base font-bold '>
-                                  {t('nombre')}
-                                </label>
+                                <label className='block text-sm font-bold '>{t('nombre')}</label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
-                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    className='w-full pl-3 pr-3 py-2  text-sm leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='text'
                                     placeholder={t('nombre')}
                                     name={`reserves.${index}.passenger`}
@@ -455,17 +361,13 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   touched.reserves &&
                                   touched.reserves[index] &&
                                   touched.reserves[index].passenger && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].passenger}
-                                    </p>
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].passenger}</p>
                                   )}
                               </div>
 
                               {/* //?Pais */}
                               <div className='mb-4'>
-                                <label className='block  text-base font-bold '>
-                                  {t('Pais')}
-                                </label>
+                                <label className='block  text-sm font-bold '>{t('Pais')}</label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
                                     placeholder={t('Seleccionar el pais')}
@@ -477,11 +379,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   />
                                   <datalist id='dataCountry' className=''>
                                     {countries.map((item, key) => (
-                                      <option
-                                        key={key}
-                                        className='border-none'
-                                        value={item.translations.spa.common}
-                                      />
+                                      <option key={key} className='border-none' value={item.translations.spa.common} />
                                     ))}
                                   </datalist>
                                 </div>
@@ -491,20 +389,16 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   touched.reserves &&
                                   touched.reserves[index] &&
                                   touched.reserves[index].country && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].country}
-                                    </p>
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].country}</p>
                                   )}
                               </div>
 
                               {/* //?Cedula */}
                               <div className='mb-4'>
-                                <label className='block text-base font-bold '>
-                                  {t('Cédula/Pasaporte')}
-                                </label>
+                                <label className='block text-sm font-bold '>{t('Cédula/Pasaporte')}</label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
-                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    className='w-full pl-3 pr-3 py-2  text-sm leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='text'
                                     placeholder={t('Cédula/Pasaporte')}
                                     name={`reserves.${index}.passport`}
@@ -516,20 +410,16 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   touched.reserves &&
                                   touched.reserves[index] &&
                                   touched.reserves[index].passport && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].passport}
-                                    </p>
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].passport}</p>
                                   )}
                               </div>
 
                               {/* //?Edad*/}
                               <div className='mb-4'>
-                                <label className='block text-base font-bold'>
-                                  {t('Fecha de nacimiento')}
-                                </label>
+                                <label className='block text-sm font-bold'>{t('Fecha de nacimiento')}</label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
-                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    className='w-full pl-3 pr-3 py-2  text-sm leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='date'
                                     placeholder='Fecha'
                                     name={`reserves.${index}.birthday`}
@@ -541,20 +431,16 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   touched.reserves &&
                                   touched.reserves[index] &&
                                   touched.reserves[index].birthday && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].birthday}
-                                    </p>
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].birthday}</p>
                                   )}
                               </div>
 
                               {/* //?Telefono */}
                               <div className='mb-4'>
-                                <label className='block text-base font-bold '>
-                                  {t('Número de teléfono')}
-                                </label>
+                                <label className='block text-sm font-bold '>{t('Número de teléfono')}</label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
-                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    className='w-full pl-3 pr-3 py-2  text-sm leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='text'
                                     placeholder={t('Número de teléfono')}
                                     name={`reserves.${index}.phone`}
@@ -566,33 +452,23 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   touched.reserves &&
                                   touched.reserves[index] &&
                                   touched.reserves[index].phone && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].phone}
-                                    </p>
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].phone}</p>
                                   )}
                               </div>
 
                               {/* //!Estado esta en option para que se pueda traducir en tiempo real */}
                               {/* //?Estado */}
                               <div className='mb-4'>
-                                <label className='block  text-base font-bold '>
-                                  {t('Estado')}
-                                </label>
+                                <label className='block  text-sm font-bold '>{t('Estado')}</label>
                                 <div className='flex items-center rounded-lg'>
                                   <Field
-                                    className='flex items-center w-full pl-3 pr-3 py-2  text-base leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
+                                    className='flex items-center w-full pl-3 pr-3 py-2  text-sm leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
                                     name={`reserves.${index}.status`}
                                     as='select'
                                   >
-                                    <option value={'Permanente'}>
-                                      {t('Permanente')}
-                                    </option>
-                                    <option value={'Temporal'}>
-                                      {t('Temporal')}
-                                    </option>
-                                    <option value={'Turista'}>
-                                      {t('Turista')}
-                                    </option>
+                                    <option value={'Permanente'}>{t('Permanente')}</option>
+                                    <option value={'Temporal'}>{t('Temporal')}</option>
+                                    <option value={'Turista'}>{t('Turista')}</option>
                                   </Field>
                                 </div>
                                 {errors.reserves &&
@@ -601,20 +477,16 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   touched.reserves &&
                                   touched.reserves[index] &&
                                   touched.reserves[index].status && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].status}
-                                    </p>
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].status}</p>
                                   )}
                               </div>
 
                               {/* //?Observaciones */}
                               <div className='mb-4'>
-                                <label className='block text-base font-bold '>
-                                  {t('Observaciones')}
-                                </label>
+                                <label className='block text-sm font-bold '>{t('Observaciones')}</label>
                                 <div className='flex items-center  border-2 border-blue-300 dark:border-slate-700 rounded-lg'>
                                   <Field
-                                    className='w-full pl-3 pr-3 py-2  text-base leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
+                                    className='w-full pl-3 pr-3 py-2  text-sm leading-tight rounded-r-lg bg-transparent focus:outline-none focus:shadow-outline'
                                     type='text'
                                     placeholder={t('Observaciones')}
                                     name={`reserves.${index}.comment`}
@@ -626,9 +498,33 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                                   touched.reserves &&
                                   touched.reserves[index] &&
                                   touched.reserves[index].comment && (
-                                    <p className='text-red-500 font-medium '>
-                                      {errors.reserves[index].comment}
-                                    </p>
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].comment}</p>
+                                  )}
+                              </div>
+
+                              {/* //?Precio */}
+                              <div className='mb-4'>
+                                <label className='block  text-sm font-bold '>Precio</label>
+                                <div className='flex items-center rounded-lg'>
+                                  <Field
+                                    className='flex items-center w-full pl-3 pr-3 py-2  text-sm leading-tight border-2 border-blue-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg'
+                                    name={`reserves.${index}.price`}
+                                    as='select'
+                                  >
+                                    {price.map((item, key) => (
+                                      <option type='number' key={key} className='border-none' value={item}>
+                                        {item}
+                                      </option>
+                                    ))}
+                                  </Field>
+                                </div>
+                                {errors.reserves &&
+                                  errors.reserves[index] &&
+                                  errors.reserves[index].price &&
+                                  touched.reserves &&
+                                  touched.reserves[index] &&
+                                  touched.reserves[index].price && (
+                                    <p className='text-red-500 font-medium '>{errors.reserves[index].price}</p>
                                   )}
                               </div>
                             </div>
@@ -643,11 +539,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                     type='submit'
                     disabled={loading}
                   >
-                    {loading ? (
-                      <i className='fa-solid fa-spinner animate-spin'></i>
-                    ) : (
-                      t('Crear Reserva')
-                    )}
+                    {loading ? <i className='fa-solid fa-spinner animate-spin'></i> : t('Crear Reserva')}
                   </button>
                 </div>
               </Form>

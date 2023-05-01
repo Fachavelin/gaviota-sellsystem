@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/open-sans": "^4.5.14",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
     "formik": "^2.2.9",

@@ -3,12 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { api } from '../';
 import { useClientStore } from '../../hooks';
-import {
-  onEdit,
-  onLoading,
-  onFinished,
-  clearMsg,
-} from '../../store/slices/reserveSlice';
+import { onEdit, onLoading, onFinished, clearMsg } from '../../store/slices/reserveSlice';
+import axios from 'axios';
 
 export const useReserveStore = () => {
   const { loading, reserve, msg } = useSelector((state) => state.reserve);
@@ -36,11 +32,11 @@ export const useReserveStore = () => {
       }
       dispatch(onFinished(data));
       console.log(data);
-      startLogout(
-        t(`Tu reserva fue agregada de manera éxitosa`) +
-          `: N°${data.succes.substring(0, 6).toUpperCase()}`
-      );
+      startLogout(t(`Tu reserva fue agregada de manera éxitosa`) + `: N°${data.succes.substring(0, 6).toUpperCase()}`);
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+      }
       console.log(error);
     }
   };

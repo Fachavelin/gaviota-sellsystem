@@ -29,5 +29,4 @@ export const clientSlice = createSlice({
   },
 });
 
-export const { onChecking, onLogin, onLogout, clearErrorMessage } =
-  clientSlice.actions;
+export const { onChecking, onLogin, onLogout, clearErrorMessage } = clientSlice.actions;

@@ -167,11 +167,7 @@ export const IndexPage = () => {
     <div className='min-h-screen w-full background-img'>
       {initialValues === null ? (
         /*   */
-        <div
-          className={`flex justify-center items-center py-20 ${
-            isSimple ? 'md:py-64' : 'md:py-80'
-          }  md:h-96`}
-        >
+        <div className={`flex justify-center items-center py-20 ${isSimple ? 'md:py-64' : 'md:py-80'}  md:h-96`}>
           <div className='grid md:grid-cols-2 gap-6'>
             <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800 w-96 rounded p-4'>
               <div className='grid grid-cols-2 gap-4 pb-3'>
@@ -225,9 +221,7 @@ export const IndexPage = () => {
                 >
                   {({ values, errors, touched }) => (
                     <Form>
-                      <label className='block  text-base font-bold '>
-                        {t('Ruta')}
-                      </label>
+                      <label className='block  text-base font-bold '>{t('Ruta')}</label>
                       <Field
                         as='select'
                         className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
@@ -240,9 +234,7 @@ export const IndexPage = () => {
                         ))}
                       </Field>
 
-                      <label className='block  text-base font-bold mt-4'>
-                        {t('Fecha')}
-                      </label>
+                      <label className='block  text-base font-bold mt-4'>{t('Fecha')}</label>
 
                       <DatePicker
                         inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
@@ -260,21 +252,14 @@ export const IndexPage = () => {
                         <button
                           className=''
                           onClick={() => {
-                            numberPassengers > 1 &&
-                              setNumberPassengers(numberPassengers - 1);
+                            numberPassengers > 1 && setNumberPassengers(numberPassengers - 1);
                           }}
                           type='button'
                         >
                           <i className='fa-solid fa-minus text-xl'></i>
                         </button>
                         {numberPassengers}
-                        <button
-                          className=''
-                          onClick={() =>
-                            setNumberPassengers(numberPassengers + 1)
-                          }
-                          type='button'
-                        >
+                        <button className='' onClick={() => setNumberPassengers(numberPassengers + 1)} type='button'>
                           <i className='fa-solid fa-plus text-xl'></i>
                         </button>
                       </div>
@@ -327,12 +312,7 @@ export const IndexPage = () => {
                     });
 
                     setInitialValues({
-                      route: [
-                        form.route,
-                        form.route2,
-                        form.route3,
-                        form.route4,
-                      ],
+                      route: [form.route, form.route2, form.route3, form.route4],
                       date: [
                         firstDate || new Date(),
                         secondDate || new Date(),
@@ -347,9 +327,7 @@ export const IndexPage = () => {
                 >
                   {({ values, errors, touched }) => (
                     <Form>
-                      <label className='block  text-base font-bold '>
-                        {t('Ruta')}
-                      </label>
+                      <label className='block  text-base font-bold '>{t('Ruta')}</label>
                       <Field
                         as='select'
                         className='mt-1 flex items-center w-full pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
@@ -430,9 +408,7 @@ export const IndexPage = () => {
                         </button>
                       </div>
 
-                      <label className='block  text-base font-bold mt-4'>
-                        {t('Fecha de ida')}
-                      </label>
+                      <label className='block  text-base font-bold mt-4'>{t('Fecha de ida')}</label>
 
                       <DatePicker
                         inputClass='mt-1 ml-4 flex items-center w-80 pl-3 pr-3 py-2 text-base leading-tight border-b bg-white dark:border-slate-700 dark:bg-slate-800'
@@ -479,21 +455,14 @@ export const IndexPage = () => {
                         <button
                           className=''
                           onClick={() => {
-                            numberPassengers > 1 &&
-                              setNumberPassengers(numberPassengers - 1);
+                            numberPassengers > 1 && setNumberPassengers(numberPassengers - 1);
                           }}
                           type='button'
                         >
                           <i className='fa-solid fa-minus text-xl'></i>
                         </button>
                         {numberPassengers}
-                        <button
-                          className=''
-                          onClick={() =>
-                            setNumberPassengers(numberPassengers + 1)
-                          }
-                          type='button'
-                        >
+                        <button className='' onClick={() => setNumberPassengers(numberPassengers + 1)} type='button'>
                           <i className='fa-solid fa-plus text-xl'></i>
                         </button>
                       </div>
@@ -512,14 +481,8 @@ export const IndexPage = () => {
               )}
             </div>
             <div className='bg-white border  dark:border-slate-700 dark:bg-slate-800  w-96 rounded p-4 hidden md:block'>
-              <label className='block  text-base font-bold mt-4 text-center'>
-                {t('Calendario')}
-              </label>
-              <div
-                className={`flex justify-center items-center ${
-                  isSimple ? 'pt-2' : 'pt-10'
-                }`}
-              >
+              <label className='block  text-base font-bold mt-4 text-center'>{t('Calendario')}</label>
+              <div className={`flex justify-center items-center ${isSimple ? 'pt-2' : 'pt-10'}`}>
                 <Calendar
                   multiple
                   locale={locale}
@@ -530,50 +493,11 @@ export const IndexPage = () => {
                   /* plugins={[<DatePanel />]} */
                 />
               </div>
-              {/* <div className={`${isSimple && 'hidden'} mt-6`}>
-                <label className='block  text-base font-bold mt-4'>
-                  {t('Fecha')} 2
-                </label>
-                <div className='flex justify-center mt-2'>
-                  <Calendar
-                    locale={i18n.language}
-                    onChange={setSecondDate}
-                    value={secondDate}
-                  />
-                </div>
-              </div>
-              <div className={`${isSimple && 'hidden'} mt-6`}>
-                <label className='block  text-base font-bold mt-4'>
-                  {t('Fecha')} 3
-                </label>
-                <div className='flex justify-center mt-2'>
-                  <Calendar
-                    locale={i18n.language}
-                    onChange={setThirdDate}
-                    value={thirdDate}
-                  />
-                </div>
-              </div>
-              <div className={`${isSimple && 'hidden'} mt-6`}>
-                <label className='block  text-base font-bold mt-4'>
-                  {t('Fecha')} 4
-                </label>
-                <div className='flex justify-center mt-2'>
-                  <Calendar
-                    locale={i18n.language}
-                    onChange={setFourthDate}
-                    value={fourthDate}
-                  />
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
       ) : (
-        <ReservePage
-          initValues={initialValues}
-          setInitValues={setInitialValues}
-        />
+        <ReservePage initValues={initialValues} setInitValues={setInitialValues} />
       )}
     </div>
   );

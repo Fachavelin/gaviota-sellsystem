@@ -18,9 +18,9 @@ export const AppRouter = () => {
 
   //!cambiar estado para version sin tocken
   //!Tambien calmbiar en el client SLice
-  useEffect(() => {
-    // checkToken();
-  }, []);
+  /* useEffect(() => {
+    checkToken();
+  }, []); */
 
   const swal = customSwal();
 
