@@ -136,6 +136,7 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
       status: 'Residente',
       paymentDate: todayDate,
       number: 1,
+      price: 20,
     });
   }
 
@@ -206,6 +207,13 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
     return text;
   };
 
+  const sendWspMessage = (msg) => {
+    let anchor = document.createElement('a');
+    anchor.href = `https://api.whatsapp.com/send?phone=593998927034&text=${msg}`;
+    anchor.target = '_blank';
+    anchor.click();
+  };
+
   return (
     <div className=''>
       {/* <Title text='Generar Reserva' /> */}
@@ -241,13 +249,8 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
               //*Fin Verificar
 
               let question = '';
+              let wspMsg = '';
 
-              /* initValues.route.forEach((item) => {
-                question =
-                  question +
-                  `${item.route} - ${item.numberPassengers} : ${item.date}` +
-                  '</br>';
-              }); */
               reserves = reserves.map((item) => {
                 return { ...item, route: getRoute(item.route) };
               });
@@ -259,6 +262,14 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                     initValues.date[index]
                   )}` +
                   '</br>';
+              }
+
+              for (let index = 0; index <= initValues.visible; index++) {
+                wspMsg =
+                  wspMsg +
+                  `${initValues.route[index]} - ${initValues.numberPassengers}pax : ${initializeDate(
+                    initValues.date[index]
+                  )}`;
               }
 
               reserves = reserves.map((item) => {
@@ -288,8 +299,16 @@ export const ReservePage = ({ initValues = {}, setInitValues }) => {
                 })
                 .then((result) => {
                   if (result.isConfirmed) {
-                    console.log(reserves);
-                    startCreate(reserves);
+                    startCreate(reserves).then((msg) => {
+                      if (msg) {
+                        swal.fire({ icon: 'success', title: msg.msg }).then((res) => {
+                          if (res.isConfirmed) {
+                            sendWspMessage('Se ha realizado la confirmación de la siguiente orden: ' + wspMsg);
+                            startLogout();
+                          }
+                        });
+                      }
+                    });
                   }
                 });
             }}

@@ -31,8 +31,12 @@ export const useReserveStore = () => {
         return;
       }
       dispatch(onFinished(data));
-      console.log(data);
-      startLogout(t(`Tu reserva fue agregada de manera éxitosa`) + `: N°${data.succes.substring(0, 6).toUpperCase()}`);
+      // console.log(data);
+
+      return {
+        msg: 'Tu reserva fue agregada de manera éxitosa',
+      };
+      // startLogout(t(`Tu reserva fue agregada de manera éxitosa`) + `: N°${data.succes.substring(0, 6).toUpperCase()}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);

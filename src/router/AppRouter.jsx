@@ -9,12 +9,7 @@ import { HandleParams } from './HandleParams';
 import { PagesRouter } from './PagesRouter';
 
 export const AppRouter = () => {
-  const {
-    status: authStatus,
-    errorMessage,
-    checkToken,
-    clearMessage,
-  } = useClientStore();
+  const { status: authStatus, errorMessage, checkToken, clearMessage } = useClientStore();
 
   //!cambiar estado para version sin tocken
   //!Tambien calmbiar en el client SLice
@@ -24,7 +19,7 @@ export const AppRouter = () => {
 
   const swal = customSwal();
 
-  if (errorMessage !== undefined) {
+  /*   if (errorMessage !== undefined) {
     swal.fire({
       icon: 'success',
       title: `${errorMessage}`,
@@ -32,6 +27,7 @@ export const AppRouter = () => {
 
     // clearMessage();
   }
+ */
 
   if (authStatus === 'checking') {
     return (
